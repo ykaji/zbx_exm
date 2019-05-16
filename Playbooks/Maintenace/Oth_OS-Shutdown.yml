@@ -9,5 +9,5 @@
       when: ansible_system == "Linux"
 
     - name: Shutdown Windows Server
-      win_command: Stop-Computer
+      win_command: Stop-Computer localhost
       when: ansible_system == "Win32NT"
