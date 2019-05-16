@@ -1,6 +1,6 @@
 ---
 - name: Shutdown Other Exam Severs
-  hosts: OthZabbixMembers
+  hosts: OthZAlMbrGrp
   gather_facts: false
 
   tasks:
