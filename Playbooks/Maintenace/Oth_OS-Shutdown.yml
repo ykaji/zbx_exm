@@ -5,7 +5,7 @@
 
   tasks:
     - name: Shutdown Linux Servers wait 60sec
-      command: shutdown -h -t 60
+      command: shutdown -h now
       when: ansible_system == "Linux"
 
     - name: Shutdown Windows Server
