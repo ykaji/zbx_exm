@@ -1,7 +1,7 @@
 ---
 - name: Shutdown Other Exam Severs
   hosts: OthZAlMbrGrp
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     - name: Shutdown Linux Servers quit
