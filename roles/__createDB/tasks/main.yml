@@ -1,0 +1,79 @@
+
+#=================================================
+#
+# Role-Task: createDB/tasks/main.yml
+#
+#=================================================
+
+#- debug: var=sv_px
+
+- set_fact:
+    dbNm:     "{{ zSvDbNm }}"
+    sqlFlPth: "{{ zSvSqlFlPth }}"
+    schmFl:   "{{ zSvSchmFl }}"
+    dbUsr:    "{{ dbSvUsr }}"
+    dbPwd:    "{{ dbSvPwd }}"
+  when:
+    sv_px == 'sv'
+
+- set_fact:
+    dbNm:     "{{ zPxDbNm }}"
+    sqlFlPth: "{{ zPxSqlFlPth }}"
+    schmFl:   "{{ zPxSchmFl }}"
+    dbUsr:    "{{ dbPxUsr }}"
+    dbPwd:    "{{ dbPxPwd }}"
+  when:
+    sv_px == 'px'
+
+#- debug: var=dbNm
+#- debug: var=sqlFlPth
+#- debug: var=schmFl
+#- debug: var=dbUsr
+#- debug: var=dbPwd
+
+- name: Install MySQL-python
+  yum:
+    name: MySQL-python
+    state: installed
+
+- name: Get DB Engine Name
+  shell: rpm -qa | egrep 'mariadb-server|mysql-server' | awk -F "-" '{ print $1 }'
+  register:
+    result 
+
+- set_fact:
+    db_engine_nm: "{{ result.stdout }}"
+
+- set_fact:
+    db_engine_nm: "mysqld"
+  when: db_engine_nm == "mysql" 
+
+- debug: var=db_engine_nm
+
+- name: Start DB Server
+  service:
+    name:    "{{ db_engine_nm }}"
+    state:   started
+    enabled: yes
+
+- name: Exist Check of Database
+  shell:
+    mysql -u{{ dbRtUsr }} -p{{ dbRtPwd }} -e "show databases"
+  register: 
+    rslt_extntSchm
+
+- name: Create Database
+  mysql_db:
+    name:           "{{ dbNm }}"
+    login_user:     "{{ dbRtUsr }}"
+    login_password: "{{ dbRtPwd }}"
+    encoding:       utf8
+  register: 
+    rslt_crtDB
+  notify:
+    - Create User of Database
+#    - Schema Archive File Decompress
+#    - Create Tables
+  when: 
+    "'{{ dbNm }}' not in rslt_extntSchm.stdout_lines" 
+

@@ -1,0 +1,28 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_agent/rhel/tasks/main.yml
+#
+#=================================================
+
+#- name: debug ServerIP
+#  debug: var=ServerIP
+
+#- name: debug ServerActiveIP
+#  debug: var=ServerActiveIP
+
+- name: Remove Zabbix Agent for RHEL
+  import_role:
+    name:      common
+    tasks_from: removeZabbixPkg.yml
+
+- name: Erase Current Repository and Specified Repository install for RHEL
+  include_role:
+    name: repository
+
+- name: Install Agent for RHEL
+  import_role:
+    name:       common
+    tasks_from: installZabbixPkg.yml
+
+

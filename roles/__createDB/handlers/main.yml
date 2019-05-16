@@ -1,0 +1,22 @@
+---
+#=================================================
+#
+# Role-Handler: createDB/handlers/main.yml
+#
+#=================================================
+
+- name: Create User of Database
+  mysql_user:
+    host:           localhost
+    login_user:     "{{ dbRtUsr }}"
+    login_password: "{{ dbRtPwd }}"
+    name:           "{{ dbUsr }}"
+    password:       "{{ dbPwd }}"
+    append_privs:   yes
+    priv:           "{{ dbNm }}.*:ALL,GRANT"
+
+#- name: Schema Archive File Decompress
+#  shell: gunzip -c "{{ sqlFlPth }}{{ schmFl }}.gz" > {{ schmDCmpDst }}{{ schmFl }}
+
+#- name: Create Tables
+#  shell: "mysql -u{{ dbRtUsr }} -p{{ dbRtPwd }} {{ dbNm }} < {{ schmDCmpDst }}{{ schmFl }}"

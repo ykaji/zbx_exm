@@ -1,0 +1,14 @@
+---
+#=================================================
+#
+# Host_Vars: 192.168.56.11.yml (ansible)
+#
+#=================================================
+
+ansible_ssh_user: root
+ansible_ssh_pass: rootoor
+
+Agt_Specify_Ver: 3.0.17
+
+ServerIP:       192.168.56.131
+ServerActiveIP: 192.168.56.131

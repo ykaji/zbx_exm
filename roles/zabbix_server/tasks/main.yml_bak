@@ -1,0 +1,98 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_server/tasks/main.yml
+#
+#=================================================
+
+- set_fact:
+    specify_Ver: "{{ Sv_Specify_Ver }}"
+
+- include_role:
+    name:  common
+
+#- name: Get Current Installed Version
+#  shell:
+#    rpm -qa | grep zabbix-server-mysql | awk -F "-" '{ print $4 }'
+#  register: rslt_crntVer
+
+#- set_fact:
+#    crntVer: "{{rslt_crntVer.stdout}}"
+
+#- name: Current Version Number Zeropadding
+#  zeropadding:
+#    verrevision: "{{ crntVer }}"
+#  register: rslt_ZrCrntVer
+
+#- name: Specify Version Number Zeropadding
+#  zeropadding:
+#    verrevision: "{{specify_Ver}}"
+#  register: rslt_ZrSpcfyVer
+
+#- set_fact:
+#   zrCrntVer: "{{rslt_ZrCrntVer.zeropad_version}}"
+#    zrSpcfyVer: "{{rslt_ZrSpcfyVer.zeropad_version}}"
+
+#- name: Diff Specify Version vs Current Version
+#  set_fact:
+#    currentIsNew: "{{ (zrCrntVer > zrSpcfyVer) | ternary('true', 'false') }}"
+
+
+- name: Compare the Current Ver with the Specified Ver
+  import_role:
+    name:       common
+    tasks_from: compareVer.yml
+
+- name: Stop Zabbix Server
+  service:
+    name:  zabbix-server
+    state: stopped
+    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+  when:
+    currentIsNew
+
+- name: Remove Zabbix Server
+  yum:
+    name: "zabbix-server-mysql, zabbix-web-mysql, zabbix-web-japanese"
+    state: removed
+  when:
+    currentIsNew
+
+#- name: Get Major Version from Specify Version
+#  getversion:
+#    specify: "{{specify_Ver}}"
+#  register: rslt_spcfyMjVer
+
+#- set_fact:
+#    spcfyMjVer: "{{rslt_spcfyMjVer.version}}"
+
+- name: Erase Current Repository and Specifyed Repository install
+  include_role:
+    name: repository
+
+- name: Install Zabbix Server Packages for CentOS
+  yum:
+    name: "{{ zabbix_server_packages }}"
+    state: installed
+  notify:
+    - Change DBUser
+    - Change DBPassword
+    - Change CacheSize 
+    - Change HistoryCacheSize
+    - Change HistoryIndexCacheSize
+    - Change TrendCacheSize
+    - Change ValueCacheSize
+    - Change Start Mode
+    - Schema Archive File Decompress
+    - Schema Import
+
+- name: Re-Start Zabbix Server
+  service:
+    name:  zabbix-server
+    state: restarted
+#    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"  
+
+- name: Httpd Re-Start
+  import_role:
+    name: httpd
+    tasks_from: restartHttpd.yml

@@ -1,0 +1,13 @@
+---
+- name: Start Zabbix Proxy Service
+  hosts: 
+    - LTZabbixProxys
+  gather_facts: true
+#  remote_user: root
+#  sudo: yes
+
+  tasks:
+    - name: Start Zabbix Proxy Service
+      service:
+        name: zabbix-proxy
+        state: started

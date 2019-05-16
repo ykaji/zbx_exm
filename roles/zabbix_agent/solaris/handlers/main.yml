@@ -1,0 +1,13 @@
+---
+#=================================================
+#
+# Role-Handler: zabbix_agent/solaris/handlers/main.yml
+#
+#=================================================
+
+- name: Start Service
+  svc:
+    name:    zabbix-agent
+    state:   started
+    enabled: yes
+

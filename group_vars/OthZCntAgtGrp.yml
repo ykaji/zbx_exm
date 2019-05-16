@@ -1,0 +1,18 @@
+---
+#=================================================
+#
+# Group_Vars: OthZCntAgt.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+Agt_Specify_Ver: 4.0.0
+
+ServerIP:             10.2.22.11,10.2.22.12
+ServerActiveIP:       10.2.22.11,10.2.22.12
+HostMetadataItem:     system.uname
+AllowRoot:            1
+EnableRemoteCommands: 1
+
+isSv: False

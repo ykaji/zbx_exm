@@ -1,0 +1,40 @@
+- name: test
+  hosts: VB30Sv
+
+
+  tasks:
+  - set_fact:
+      dbRtUsr: root
+
+  - set_fact:
+      dbNm:     "{{ zSvDbNm }}"
+      sqlFlPth: "{{ zSvSqlFlPth }}"
+      schmFl:   "{{ zSvSchmFl }}"
+      dbUsr:    "{{ dbSvUsr }}"
+      dbPwd:    "{{ dbSvPwd }}"
+    when:
+      sv_px == 'sv'
+
+
+  - name: Already Exist Check of Database
+    shell:
+##    mysql -u{{ dbRtUsr }} -p{{ DBRootPWD }} -e "show databases"
+      mysql -u{{ dbRtUsr }}  -e "show databases"
+    register:
+      rslt_extntSchm
+
+  - debug: var=dbNm
+
+
+  - name: Create Schema
+    mysql_db:
+      name:          "{{ dbNm }}"
+      login_user:    "{{ dbRtUsr }}"
+#      login_password: "{{ dbRtPwd }}"
+      encoding:       utf8
+    register:
+      rslt_crtDB
+    when:
+       '"rslt_extntSchm" not in dbNm'
+
+  - debug: var=rslt_crtDB

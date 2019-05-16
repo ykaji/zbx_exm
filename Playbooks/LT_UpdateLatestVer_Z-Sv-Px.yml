@@ -1,0 +1,43 @@
+---
+- name: Upgrade Zabbix Server Package
+  hosts: 
+    - LTZabbixServer
+    - LTZabbixProxys
+  gather_facts: true
+#  remote_user: root
+#  sudo: yes
+
+  vars:
+    zabbix_server_packages:
+      - zabbix-server-mysql
+      - zabbix-web-mysql
+      - zabbix-web-japanese
+      - zabbix-sender
+      - zabbix-get
+
+    zabbix_proxy_packages:
+      - zabbix-proxy-mysql
+      - zabbix-sender
+      - zabbix-get
+
+  tasks:
+    - name: Upgrade Zabbix Server Packages
+      yum:
+        name: "{{ zabbix_server_packages }}"
+        state: latest
+      when: ansible_hostname | match("Z.+LTSV01")
+
+    - name: Zabbix Server Database remove
+      shell: mysql -uroot -ptoor -e "drop database zabbix;"
+      when: ansible_hostname | match("Z.+LTSV01")
+
+    - name: Upgrade Zabbix Proxy Packages
+      yum:
+        name: "{{ zabbix_proxy_packages }}"
+        state: latest
+      when: ansible_hostname | match("Z.+LTPX0[1-4]")
+
+    - name: Zabbix Proxy Database remove
+      shell: mysql -uroot -ptoor -e "drop database zabbix_proxy;"
+      when: ansible_hostname | match("Z.+LTPX0[1-4]")
+

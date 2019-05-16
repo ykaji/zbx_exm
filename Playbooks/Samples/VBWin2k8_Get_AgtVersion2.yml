@@ -1,0 +1,16 @@
+---
+- name: Get Zabbix Agent Version
+  hosts: VBWin2k8
+  gather_facts: true
+
+  tasks:
+    - name: Get Version
+      win_file_version:
+        path: c:\zabbix\zabbix_agentd.exe
+      register: rslt_agtVersion
+
+
+    - set_fact:
+        version: "{{rslt_agtVersion.win_file_version.product_version}}"
+
+    - debug: var=version

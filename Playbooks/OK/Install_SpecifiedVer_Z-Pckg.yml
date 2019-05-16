@@ -1,0 +1,261 @@
+---
+- name: Update Zabbix Package(Zabbix Server, Proxy, Agent)
+  hosts: ubudebi
+  gather_facts: true
+#  remote_user: root
+#  sudo: yes
+
+  vars:
+    specify_version: 3.2.6
+
+    mysql_root_pwd: toor
+
+    zabbix_server_packages:
+      - zabbix-server-mysql-{{ specify_version }}
+      - zabbix-web-mysql-{{ specify_version }}
+      - zabbix-web-japanese-{{ specify_version }}
+      - zabbix-sender-{{ specify_version }}
+      - zabbix-get-{{ specify_version }}
+      - zabbix-agent-{{ specify_version }}
+
+    zabbix_proxy_packages:
+      - zabbix-proxy-mysql-{{ specify_version }}
+      - zabbix-sender-{{ specify_version }}
+      - zabbix-get-{{ specify_version }}
+      - zabbix-agent-{{ specify_version }}
+
+    autostart_daemon_at_zabbix_server:
+      - zabbix-server
+      - zabbix-agent
+
+    autostart_daemon_at_zabbix_proxy:
+      - zabbix-proxy
+      - zabbix-agent
+
+
+  tasks:
+### Convert to lowercase for Debian , Ubuntu Distribution Name ###
+    - name: Get Distribusiton lowercase name
+      set_fact: 
+        low_distribution : "{{ansible_distribution|lower}}"
+      when:
+        (ansible_distribution == "Debian") or (ansible_distribution == "Ubuntu")
+
+
+### Zabbix 3.0.x Repositry Install ###
+    - name: "Install Zabbix 3.0 repository of CentOS{{ansible_distribution_major_version}}.x"
+      yum:
+        name: "http://repo.zabbix.com/zabbix/3.0/rhel/{{ansible_distribution_major_version}}/x86_64/zabbix-release-3.0-1.el{{ansible_distribution_major_version}}.noarch.rpm"
+        state: present
+      ##when: ansible_hostname | match("Z.+LTSV01")
+      when: 
+        - ansible_distribution == "CentOS"
+        - specify_version | search("^3.0")
+
+### Zabbix 3.2.x Repositry Install ###
+    - name: "Install Zabbix 3.2 repository of CentOS{{ansible_distribution_major_version}}.x"
+      yum:
+        name: "http://repo.zabbix.com/zabbix/3.2/rhel/{{ansible_distribution_major_version}}/x86_64/zabbix-release-3.2-1.el{{ansible_distribution_major_version}}.noarch.rpm"
+        state: present
+      ##when: ansible_hostname | match("Z.+LTSV01")
+      when: 
+        - ansible_distribution == "CentOS"
+        - specify_version | search("^3.2")
+
+ # Debian and Ubuntu
+    - name: Download Zabbix 3.2 repository of {{ansible_distribution}} {{ansible_distribution_release}}
+      shell: cd /tmp; wget http://repo.zabbix.com/zabbix/3.2/{{low_distribution}}/pool/main/z/zabbix-release/zabbix-release_3.2-1+{{ansible_distribution_release}}_all.deb 
+     ##when: ansible_hostname | match("Z.+LTSV01")
+      when: 
+        ( ansible_distribution == "Debian" and specify_version | search("^3.2")) or
+        ( ansible_distribution == "Ubuntu" and specify_version | search("^3.2"))
+
+    - name: "Install Zabbix 3.2 repository of {{ansible_distribution}} {{ansible_distribution_release}}"
+      apt:
+        deb: /tmp/zabbix-release_3.2-1+{{ansible_distribution_release}}_all.deb
+        #selection: install
+      register: result
+      when: 
+        ( ansible_distribution == "Debian" and specify_version | search("^3.2")) or
+        ( ansible_distribution == "Ubuntu" and specify_version | search("^3.2"))
+
+### Zabbix 3.4.x Repositry Install ###
+    - name: Install Zabbix 3.4 repository for CentOS{{ansible_distribution_major_version}}.x
+      yum:
+        name: http://repo.zabbix.com/zabbix/3.4/rhel/{{ansible_distribution_major_version}}/x86_64/zabbix-release-3.4-1.el{{ansible_distribution_major_version}}.noarch.rpm
+        state: present
+      ##when: ansible_hostname | match("Z.+LTSV01")
+      when: 
+        - ansible_distribution == "CentOS"
+        - specify_version | search("^3.4")
+
+ # Debian and Ubuntu
+    - name: Download Zabbix 3.4 repository for "{{ansible_distribution}} {{ansible_distribution_release}}"
+      shell: cd /tmp; wget http://repo.zabbix.com/zabbix/3.4/{{low_distribution}}/pool/main/z/zabbix-release/zabbix-release_3.4-1+{{ansible_distribution_release}}_all.deb 
+      ##when: ansible_hostname | match("Z.+LTSV01")
+      when: 
+        ( ansible_distribution == "Debian" and specify_version | search("^3.4")) or
+        ( ansible_distribution == "Ubuntu" and specify_version | search("^3.4"))
+
+    - name: "Install Zabbix 3.4 repository of {{ansible_distribution}} {{ansible_distribution_release}}"
+      apt:
+        deb: "/tmp/zabbix-release_3.4-1+{{ansible_distribution_release}}_all.deb"
+      when: 
+        ( ansible_distribution == "Debian" and specify_version | search("^3.4")) or
+        ( ansible_distribution == "Ubuntu" and specify_version | search("^3.4"))
+
+### Repository Update ###
+    - name: Repository make cache for CentOS
+      yum:
+        name: zabbix*
+        state: present
+        update_cache: yes
+      when: 
+        - ansible_distribution == "CentOS"
+
+#    - name: Repository make cache for Ubuntu and Debian
+#      shell: apt update
+#      when: 
+#         (ansible_distribution == "Ubuntu") or
+#         (ansible_distribution == "Debian")
+
+
+### Zabbix Package Install###
+## for CentOS ##
+    - name: Install Zabbix Server Packages for CentOS
+      yum:
+        name: "{{ zabbix_server_packages }}"
+        state: latest
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_hostname | match("Z.+LTSV01")
+
+    - name: Install Zabbix Proxy Packages for CentOS
+      yum:
+        name: "{{ zabbix_proxy_packages }}"
+        state: latest
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_hostname | match("Z.+LTPX01")
+
+
+    - name: Install Zabbix Agent Packages for CentOS
+      yum:
+        name: "zabbix-agent-{{specify_version}}"
+        state: latest
+      register: install_agent_packager_result
+      when: 
+        - ansible_distribution == "CentOS"
+
+
+## for Debian and Ubuntu ##
+    - name: Install_Zabbix Agent Packages for {{ansible_distribution}}
+      apt:
+        #name: "zabbix-agent_{{specify_version}}-1+{{ansible_distribution_release}}"
+        name: zabbix-agent
+        update_cache: yes
+      when: 
+        (ansible_distribution == "Ubuntu") or
+        (ansible_distribution == "Debian")
+
+
+### Zabbix Package Autostart ###
+## Zabbix Server ##
+    - name: Zabbix Server Package autostart setting for CentOS6.x
+      service:
+        name:    "{{ item }}"
+        enabled: yes
+        state:   stopped
+      with_items:
+        - "{{autostart_daemon_at_zabbix_server}}"
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "6"
+        - ansible_hostname | match("Z.+LTSV01")
+
+    - name: Zabbix Server Package autostart setting for CentOS7.x
+      systemd:
+        name:    "{{ item }}"
+        enabled: yes
+        state:   stopped
+      with_items:
+        - "{{autostart_daemon_at_zabbix_server}}"
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "7"
+        - ansible_hostname | match("Z.+LTSV01")
+
+## Zabbix Proxy ##
+    - name: Zabbix Proxy Package Started setting for CentOS6.x
+      service:
+        name:    "{{ item }}"
+        enabled: yes
+        state:   stopped
+      with_items:
+        - "{{autostart_daemon_at_zabbix_proxy}}"
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "6"
+        - ansible_hostname | match("Z.+LTPX01")
+
+    - name: Zabbix Proxy Package autostart setting for CentOS7.x
+      systemd:
+        name:    "{{ item }}"
+        enabled: yes
+        state:   stopped
+      with_items:
+        - "{{autostart_daemon_at_zabbix_proxy}}"
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "6"
+        - ansible_hostname | match("Z.+LTPX01")
+
+## Zabbix Agent ##
+# CentOS 6.x ##
+    - name: Zabbix Agent Package autostart setting for CentOS6.x
+      service:
+        name:    zabbix-agent
+        enabled: yes
+        state:   stopped
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "6"
+#        - ansible_hostname | match("Z.+LTPX01")
+
+# CentOS7.x Ubuntu Debian ##
+    - name: Zabbix Agent Package autostart setting for CentOS7.x, Ubuntu and Debian
+      systemd:
+        name:    zabbix-agent
+        enabled: yes
+        state:   stopped
+      when: 
+         (ansible_distribution == "CentOS" and ansible_distribution_major_version == "7") or
+         (ansible_distribution == "Debian" and ansible_distribution_major_version == "8") or
+         (ansible_distribution == "Ubuntu" and ansible_distribution_major_version == "16")
+
+#   - name: Zabbix Server Database remove
+ #       shell: mysql -uroot -p{{ mysql_root_pwd }} -e "drop database zabbix;"
+ #       shell: mysql -uroot -e "drop database zabbix;"
+ #     when: ansible_hostname | match("Z.+LTSV01")
+ #     when: ansible_hostname | match("zabbix326")
+
+ #   - name: Update Zabbix Proxy Packages
+ #     yum:
+ #       name: "{{ zabbix_proxy_packages }}"
+ #       state: latest
+ #     when: ansible_hostname | match("Z.+LTPX0[1-4]")
+
+ #   - name: Zabbix Proxy Package autostart setting
+ #     service:
+ #       name: "{{ item }}"
+ #       state: stopped
+ #       enabled: yes
+ #     with_items:
+ #       - zabbix-proxy
+ #       - zabbix-agent
+ #     when: ansible_hostname | match("Z.+LTPX0[1-4]")
+
+ #   - name: Zabbix Proxy Database remove
+ #     shell: mysql -uroot -p{{ mysql_root_pwd }} -e "drop database zabbix_proxy;"
+ #     when: ansible_hostname | match("Z.+LTPX0[1-4]")
+

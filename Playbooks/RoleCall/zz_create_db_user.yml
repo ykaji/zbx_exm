@@ -1,0 +1,11 @@
+---
+- name: Create Schema User
+  hosts: VB30Px
+  gather_facts: true
+
+  tasks:
+    - import_role:
+        name: database
+        tasks_from: createSchemaUser.yml
+
+

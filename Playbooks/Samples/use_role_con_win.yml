@@ -1,0 +1,7 @@
+---
+- name: Widows connection used role
+  hosts: OthZWinAgt
+  gather_facts: true
+
+  roles:
+    - os_windows

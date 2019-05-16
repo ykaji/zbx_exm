@@ -1,0 +1,7 @@
+---
+- name: Display Server Ip of Zabbix Agent conf
+  hosts: OthZPx01Mbr
+#  hosts: 10.2.22.45
+  tasks:
+    - debug: var=ServerIP
+

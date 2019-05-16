@@ -1,0 +1,11 @@
+---
+- name: Drop Database on Zabbix Server
+  hosts: OthZPx
+  gather_facts: true
+
+  tasks:
+  - include_role:
+      name:       database
+      tasks_from: dropDb.yml
+
+

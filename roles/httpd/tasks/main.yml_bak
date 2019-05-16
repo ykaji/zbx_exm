@@ -1,0 +1,18 @@
+---
+#=================================================
+#
+# Role-Task: httpd/tasks/main.yml
+#
+#=================================================
+
+- name: Install httpd
+  yum:
+    name:    httpd
+    state:   installed 
+
+- name: Start httpd
+  service:
+    name:    httpd
+    state:   started
+    enabled: yes  
+

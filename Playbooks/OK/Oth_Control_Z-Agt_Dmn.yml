@@ -1,0 +1,98 @@
+---
+- name: Restart Zabbix Agent
+  hosts: OthZCntAgt
+  gather_facts: true
+
+  vars:
+    action: "{{action_mode | lower}}"
+
+  vars_prompt:
+    - name: action_mode
+      prompt: "Enter 'start' , 'restart' or 'stop' (Default:start)"
+      default: start
+      private: no
+
+  tasks:
+#    - debug: var=action_mode
+#    - debug: var=action
+
+### Start Section ###    
+    - name: Start Zabbix Agent for CentOS7.x and Ubuntu and Debian
+      service:
+        name: zabbix-agent
+        state: started
+      when:
+        - action == "start" 
+        - ansible_system == "Linux"
+        - ansible_distribution_major_version != "6"
+
+    - name: Start Zabbix Agent for CentOS6.x
+      service:
+        name: zabbix-agent
+        state: started
+      when:
+        - action == "start" 
+        - ansible_distribution == 'CentOS'
+        - ansible_distribution_major_version == '6'
+
+    - name: Start Zabbix Agent for Windows
+      win_service:
+        name: "Zabbix Agent"
+        state: started
+      when:
+        - action == "start" 
+        - ansible_system == "Win32NT"
+
+### Restart Section ###    
+    - name: Restart Zabbix Agent for CentOS7.x and Ubuntu and Debian
+      service:
+        name: zabbix-agent
+        state: restarted
+      when:
+        - action == "restart" 
+        - ansible_system == "Linux"
+        - ansible_distribution_major_version != "6"
+
+    - name: Restart Zabbix Agent for CentOS6.x
+      service:
+        name: zabbix-agent
+        state: restarted
+      when:
+        - action == "restart" 
+        - ansible_distribution == 'CentOS'
+        - ansible_distribution_major_version == '6'
+
+    - name: Restart Zabbix Agent for Windows
+      win_service:
+        name: "Zabbix Agent"
+        state: restarted
+      when:
+        - action == "restart" 
+        - ansible_system == "Win32NT"
+
+### Stop Section ###
+    - name: Stop Zabbix Agent for CentOS7.x and Ubuntu and Debian
+      service:
+        name: zabbix-agent
+        state: stopped
+      when:
+        - action == "stop"
+        - ansible_system == "Linux"
+        - ansible_distribution_major_version != "6"
+
+    - name: Stop Zabbix Agent for CentOS6.x
+      service:
+        name: zabbix-agent
+        state: stopped
+      when:
+        - action == "stop"
+        - ansible_distribution == 'CentOS'
+        - ansible_distribution_major_version == '6'
+
+    - name: Stop Zabbix Agent for Windows
+      win_service:
+        name: "Zabbix Agent"
+        state: stopped
+      when:
+        - action == "stop"
+        - ansible_system == "Win32NT"

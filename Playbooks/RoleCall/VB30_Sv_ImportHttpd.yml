@@ -1,0 +1,9 @@
+---
+- name: Controll httpd
+  hosts: VB30Sv
+  gather_facts: true
+
+  roles:
+    - httpd
+
+

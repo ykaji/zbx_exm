@@ -1,0 +1,8 @@
+---
+- name: Create DB Schema for Zabbix Server
+  hosts: OthZSv
+  gather_facts: true
+
+  roles:
+    - database
+

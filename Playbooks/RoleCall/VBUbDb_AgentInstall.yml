@@ -1,0 +1,8 @@
+---
+- name: Install Zabbix Agent for Ubuntu Debian on Oracle Virtualbox
+  hosts: VBUbDb
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

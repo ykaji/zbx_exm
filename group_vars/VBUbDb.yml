@@ -1,0 +1,18 @@
+---
+#=================================================
+#
+# Group_Vars: VBUbDb.yml
+#
+#=================================================
+
+ansible_ssh_user: root
+ansible_ssh_pass: rootoor
+
+Agt_Specify_Ver: 3.0.17
+
+ServerIP:       192.168.56.131
+ServerActiveIP: 192.168.56.131
+HostMetadataItem: system.uname
+
+AllowRoot: 0
+EnableRemoteCommands: 0

@@ -1,0 +1,22 @@
+- name: Upgrade to Zabbix Agent Package
+  hosts: LTZabbixLinuxMembers
+  gather_facts: true
+#  remote_user: root
+#  sudo: yes
+
+  tasks:
+  - name: Case of CentOS
+    yum: 
+      name: zabbix-agent
+      state: latest
+    when: ansible_distribution == 'CentOS'
+
+  - name: Case of Ubuntu xenial
+    apt:
+      deb: http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix/zabbix-agent_3.0.9-1+xenial_amd64.deb
+    when: ansible_distribution == 'Ubuntu'
+
+  - name: Case of Debian jessie
+    apt:
+      deb: http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix/zabbix-agent_3.0.9-1+jessie_amd64.deb    
+    when: ansible_distribution == 'Debian'

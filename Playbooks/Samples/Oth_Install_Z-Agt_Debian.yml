@@ -1,0 +1,10 @@
+- name: Install Zabbix Agent Package
+  hosts: OthZabbixDebianAgents
+  gather_facts: false
+#  remote_user: root
+#  sudo: yes
+
+  tasks:
+  - name: Zabbix Agent Install 
+    apt:
+      deb: http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix/zabbix-agent_3.0.8-1+jessie_amd64.deb

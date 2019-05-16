@@ -1,0 +1,13 @@
+---
+- name: Shutdown Other Exam Severs
+  hosts: OthZabbixMembers
+  gather_facts: false
+
+  tasks:
+    - name: Shutdown Linux Servers wait 60sec
+      command: shutdown -h -t 60
+      when: ansible_system == "Linux"
+
+    - name: Shutdown Windows Server
+      win_command: Stop-Computer
+      when: ansible_system == "Win32NT"

@@ -1,0 +1,121 @@
+---
+- name: Create Zabbix Database for Zabbix Server and Zabbix Proxy
+  hosts: 192.168.56.32
+##  gather_facts: true
+
+  vars:
+    zabbix_server_database_name:   zabbix_sample
+    zabbix_server_create_sql_path: /usr/share/doc/zabbix-server-mysql-3.2.6/
+    zabbix_server_schema_file:     create.sql
+    zabbix_proxy_database_name:    zabbix_proxy_sample
+    zabbix_proxy_create_sql_path:  /usr/share/doc/zabbix-proxy-mysql-3.2.6/
+    zabbix_proxy_schema_file:      schema.sql
+    zabbix_schema_decompress_dest: /root/
+    mysql_login_user:              root
+    mysql_login_pwd:               toor
+
+  tasks:
+### Zabbix Server Section ###
+    - name: Create Database for Zabbix Server
+      mysql_db:
+        name: "{{ zabbix_server_database_name }}"
+        login_user: "{{ mysql_login_user }}"
+       ### login_password: {{ mysql_login_pwd }}
+        encoding: utf8
+      register: create_server_database_result
+      when: ansible_hostname | match("zabbix326")
+
+    - name: Add User for Database for Zabbix Server
+      mysql_user:
+        name:         zabbix
+        host:         localhost
+        password:     zabbix
+        append_privs: yes
+        login_user:   "{{ mysql_login_user }}"
+        priv:         "{{ zabbix_server_database_name }}.*:ALL,GRANT"
+      when: ansible_hostname | match("zabbix326") and create_server_database_result.changed == true
+
+    - name: Schema File Decompress for Zabbix Server
+      shell: gunzip -c "{{ zabbix_server_create_sql_path }}{{ zabbix_server_schema_file }}.gz" > {{ zabbix_schema_decompress_dest }}{{ zabbix_server_schema_file }}
+      when: ansible_hostname | match("zabbix326") and create_server_database_result.changed == true
+
+    - name: Exist Check for Zabbix Server Database
+      shell:
+        mysql -u{{ mysql_login_user }} -e"show tables from {{ zabbix_server_database_name }}"
+      register: zabbix_server_result 
+      when: ansible_hostname | match("zabbix326") and create_server_database_result.changed == true
+
+
+    - name: Create Tables for Zabbix Server Database
+    #  shell: mysql -uroot -p{{ mysql_root_pwd }} {{ zabbix_server_database_name }} < {{ zabbix_schema_decompress_dest }}{{ zabbix_server_schema_file }}
+      shell: mysql -uroot {{ zabbix_server_database_name }} < {{ zabbix_schema_decompress_dest }}{{ zabbix_server_schema_file }}
+      when: ansible_hostname | match("zabbix326") and create_server_database_result.changed == true
+
+### Zabbix Proxy Section ###
+
+    - name: Exist Check for Zabbix Proxy Database master
+      shell:
+        mysql -u{{ mysql_login_user }} -e "show databases"
+      register: zabbix_proxy_database_list_result
+      when: ansible_hostname | match("Z.+LTPX0[1-4]")
+
+##
+    - name: Debug Exist Check for Zabbix Proxy Database master
+      debug:
+        msg={{zabbix_proxy_database_list_result}}
+##
+
+    - name: Debug Database List Check
+      debug:
+        msg="not Found"
+      when: "'{{ zabbix_proxy_database_name }}' not in zabbix_proxy_database_list_result.stdout_lines"
+
+    - name: Debug Database List Check
+      debug:
+        msg="Database Exist"
+      when: "'{{ zabbix_proxy_database_name }}' in zabbix_proxy_database_list_result.stdout_lines"
+
+    - name: Debug Hostname Check
+      debug:
+        msg="Match Hostname"
+      when: (ansible_hostname | match("Z.+LTPX0"))
+
+    - name: Create Database for Zabbix Proxy
+      mysql_db:
+        name:       "{{ zabbix_proxy_database_name }}"
+        login_user: "{{ mysql_login_user }}"
+       # login_password: {{ mysql_login_pwd }}
+        encoding: utf8
+      register: create_proxy_database_result
+      ##when: (ansible_hostname | match("Z.+LTPX0[1-4]")) and ("'{{ zabbix_proxy_database_name }}' not in  zabbix_proxy_database_list_result.stdout_lines")
+      when: 
+        - "'{{ zabbix_proxy_database_name }}' not in zabbix_proxy_database_list_result.stdout_lines" 
+        - ansible_hostname | match(".*Z.+LTPX0.*")
+
+    - debug: msg={{create_proxy_database_result}}
+         
+    - name: Add User for Database for Zabbix Proxy
+      mysql_user:
+        name:         zabbix
+        host:         localhost
+        password:     zabbix
+        append_privs: yes
+        login_user:   "{{ mysql_login_user }}"
+      #  login_password: "{{ mysql_root_pwd }}"
+        priv:         "{{ zabbix_proxy_database_name }}.*:ALL,GRANT"
+      when: ansible_hostname | match("Z.+LTPX0[1-4]") and create_proxy_database_result.changed == true
+
+    - name: Schema File Decompress for Zabbix Proxy
+      shell: gunzip -c "{{ zabbix_proxy_create_sql_path }}{{ zabbix_proxy_schema_file }}.gz" > {{ zabbix_schema_decompress_dest }}{{ zabbix_proxy_schema_file }}
+      when: ansible_hostname | match("Z.+LTPX0[1-4]") and create_proxy_database_result.changed == true
+
+    - name: Exist Check for Zabbix Proxy Database
+      shell:
+        mysql -u{{ mysql_login_user }} -e"show tables from {{ zabbix_proxy_database_name }}"
+      register: zabbix_proxy_result
+      when: ansible_hostname | match("Z.+LTPX0[1-4]") and create_proxy_database_result.changed == true
+
+    - name: Create Tables for Zabbix Proxy Database
+    #  shell: mysql -uroot -p{{ mysql_root_pwd }} {{ zabbix_proxy_database_name }} < {{ zabbix_schema_decompress_dest }}{{ zabbix_proxy_schema_file }}
+      shell: mysql -uroot {{ zabbix_proxy_database_name }} < {{ zabbix_schema_decompress_dest }}{{ zabbix_proxy_schema_file }}
+      when: ansible_hostname | match("Z.+LTPX0[1-4]") and create_proxy_database_result.changed == true

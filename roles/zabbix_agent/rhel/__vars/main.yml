@@ -1,0 +1,9 @@
+#=================================================
+#
+# Role-Vars: zabbix_agent/rhel/vars/main.yml
+#
+#=================================================
+
+##repo_Url: "{{zabbix_Base_Url}}/{{OS_Version}}/{{ansible_machine}}"
+
+##Agt_CnfPath: "/etc/zabbix/zabbix_agentd.conf"

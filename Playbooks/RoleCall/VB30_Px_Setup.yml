@@ -1,0 +1,11 @@
+---
+- name: Create Zabbix Enviroment for Zabbix Proxy
+  hosts: VB30Px
+  gather_facts: true
+
+  roles:
+    - database
+    - zabbix_proxy
+    - zabbix_agent
+
+

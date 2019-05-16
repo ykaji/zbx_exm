@@ -1,0 +1,27 @@
+---
+- name: Already Exist Database Check on MySQL
+  hosts: OthZSv
+  gather_facts: true
+
+  tasks:
+  - name: Call database::alreadyExistDatabaseCheck.yml
+    include_role:
+      name:       database
+      tasks_from: alreadyExistDatabaseCheck.yml
+
+  - debug: var=rslt_extntSchm.stdout_lines
+
+
+  - set_fact: 
+      target: "zabbix "
+
+  - debug: msg="Find It"
+    when:  "target in rslt_extntSchm.stdout_lines"
+
+  - debug: msg="Find It2"
+    when:  
+      - "'XXzabbix' in rslt_extntSchm.stdout_lines"
+      - "'mysqlxx' in rslt_extntSchm.stdout_lines"
+
+  - debug: msg="Can not Find It"
+    when:  "target not in rslt_extntSchm.stdout_lines"

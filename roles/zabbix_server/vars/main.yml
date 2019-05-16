@@ -1,0 +1,31 @@
+---
+#=================================================
+#
+# Role-Vars: zabbix_server/vars/main.yml
+#
+#=================================================
+
+# Zabbix Server Install Target Packages
+#zabbix_server_packages:
+installPkg:
+  - zabbix-server-mysql-{{ Sv_Specify_Ver }}
+  - zabbix-web-mysql-{{ Sv_Specify_Ver }}
+  - zabbix-web-japanese-{{ Sv_Specify_Ver }}
+
+# If Case Erase Target Zabbix Server Package
+removePkg:
+  - zabbix-server-mysql
+  - zabbix-web-japanese
+  - zabbix-web-mysql
+  - zabbix-agent
+
+# Zabbix Server Short Name
+pkg_name: zabbix-server
+
+# Zabbix Server Database Schema File Decompress Temp Directroy
+schmDCmpDst: /tmp/
+#SqlFlPth:    "/usr/share/doc/zabbix-server-mysql-{{Sv_Specify_Ver}}/"
+#SchmFl:      create.sql
+
+Sv_CnfPath:  /etc/zabbix/zabbix_server.conf
+

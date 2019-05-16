@@ -1,0 +1,14 @@
+---
+- name: Get Zabbix Agent Version
+  hosts: VBWin2k8
+  gather_facts: false
+
+  tasks:
+    - name: Get Version
+      win_shell:
+        ((get-command c:\zabbix_agentd.exe).fileversioninfo |format-wide productversion) |out-string | foreach {$_.trim()} 
+      register: rslt_agtVersion
+
+
+
+    - debug: var=rslt_agtVersion

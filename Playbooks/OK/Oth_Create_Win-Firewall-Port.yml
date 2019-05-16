@@ -1,0 +1,14 @@
+---
+- name: Create Windows Firewall rule for Windows OS
+  hosts: OthZWinAgt
+  gather_facts: true
+
+  tasks:
+    - name: Add Firewall rule
+      win_firewall_rule:
+        name:      "Zabbix Agent"
+        localport: 10050
+        direction: in
+        action:    allow
+        state:     present
+      when: ansible_system == "Win32NT"

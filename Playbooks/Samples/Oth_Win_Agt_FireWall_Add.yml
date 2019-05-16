@@ -1,0 +1,17 @@
+---
+- name: Firewall Rule Add For Windows
+  hosts: OthZWinAgt
+  gather_facts: true
+
+  tasks:
+    - name: Firewall Add
+      win_firewall_rule:
+        name:      "Zabbix Agent"
+        localport: 10050
+        action:    allow
+        direction: in
+        protocol:  TCP
+        profiles:  domain,private,public
+        state:     present
+        enabled:   yes
+

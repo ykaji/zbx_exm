@@ -1,0 +1,55 @@
+---
+#==============================
+#
+#  zabbix_agent/centos/handler/main.yml
+#
+#==============================
+
+- name: Change Server IP
+  replace:
+    path:    '{{Agt_CnfPath}}'
+    regexp:  '^(Server)=.*'
+    replace: '\1={{ ServerIP }}'
+    backup:   yes
+
+
+- name: Change ServerActive IP
+  replace:
+    path:    '{{Agt_CnfPath}}'
+    regexp:  '^(ServerActive)=.*'
+    replace: '\1={{ ServerActiveIP }}'
+    backup:   yes
+
+
+- name: Change Hostname
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(Hostname)=(.*)'
+    replace: '#\1=\2'
+    backup:   yes
+
+- name: Change Hostname
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^#(HostnameItem)=(.*)'
+    replace: '\1=\2'
+    backup:   yes
+
+
+
+
+- name: Change Start Mode
+  service:
+    name:    zabbix-agent
+    enabled: yes
+    use:     "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+  when:
+    - ansible_distribution == "CentOS"
+
+
+- name: Re-Start Service
+  service:
+    name:  zabbix-agent
+    state: restarted
+    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+

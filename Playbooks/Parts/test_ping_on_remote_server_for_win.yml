@@ -1,0 +1,11 @@
+---
+- name: test.yml
+  hosts: windows
+
+  tasks:
+  - name: ping to www.kaji.be
+    shell: "ping www.kaji.be -c 3"
+    register: result
+
+  - debug:
+      var: result

@@ -1,0 +1,15 @@
+- name: Install Zabbix Proxy Package
+  hosts: LTZabbixProxys
+  gather_facts: false
+#  remote_user: root
+#  sudo: yes
+
+  tasks:
+  - name: Zabbix Proxy Install 
+    yum: 
+      name: zabbix-proxy
+      state: latest
+  - name: Zabbix Agent Install 
+    yum: 
+      name: zabbix-agent
+      state: latest

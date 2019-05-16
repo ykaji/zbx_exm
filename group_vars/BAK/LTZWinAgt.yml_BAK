@@ -1,0 +1,43 @@
+## Login ##
+ansible_ssh_user: Administrator
+ansible_ssh_pass: ZAQwsx123
+ansible_port: 5986
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+
+## Specify Zabbix Agent ##
+specify_version: 3.2.6
+
+## Zabbix Agent Variables ##
+base_folder: /root/zabbix_agent/
+
+## MSI ##
+zabbix_agent_msi_folder: "{{ base_folder }}msi/"
+zabbix_agent_msi: ZABICOM_Agent.msi
+
+## Exe files ##
+zabbix_agent_bin_folder: "{{ base_folder }}binary/"
+zabbix_agentd: zabbix_agentd.exe
+zabbix_get: zabbix_get.exe
+zabbix_sender: zabbix_sender.exe
+
+## Config file ##
+zabbix_agent_conf: "zabbix_agentd.win.conf"
+
+## Zip File ##
+zabbix_agent_zip: "zabbix_agents_{{specify_version}}.win.zip"
+
+## Zabbix Agent Install Path ##
+zabbix_agent_inatall_path: C:\zabbix\
+
+## 64bit ##
+zabbix_agentd_64: "{{ zabbix_agent_bin_folder }}win64/{{ zabbix_agentd }}"
+zabbix_get_64: "{{ zabbix_agent_bin_folder }}win64/{{ zabbix_get }}"
+zabbix_sender_64: "{{ zabbix_agent_bin_folder }}win64/{{ zabbix_sender }}"
+
+## 32bit ##
+zabbix_agentd_32: "{{ zabbix_agent_bin_folder }}win32/{{ zabbix_agentd }}"
+zabbix_get_32: "{{ zabbix_agent_bin_folder }}win64/{{ zabbix_get }}"
+zabbix_sernder_32: "{{ zabbix_agent_bin_folder }}win64/{{ zabbix_sender }}"
+
+

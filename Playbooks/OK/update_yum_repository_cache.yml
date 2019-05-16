@@ -1,0 +1,12 @@
+---
+- name: Upgrade Zabbix Server Package
+  hosts: 192.168.56.32
+  gather_facts: true
+
+  tasks:
+    - name: yum make cache
+      yum:
+        name: zabbix*
+        state: latest
+        update_cache: yes
+      when: ansible_hostname | match("zabbix326")

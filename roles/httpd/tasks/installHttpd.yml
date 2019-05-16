@@ -1,0 +1,12 @@
+---
+#=================================================
+#
+# Role-Task: httpd/tasks/installHttpd.yml
+#
+#=================================================
+
+- name: Install httpd
+  yum:
+    name:    httpd
+    state:   installed 
+

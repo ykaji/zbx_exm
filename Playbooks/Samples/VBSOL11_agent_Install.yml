@@ -1,0 +1,18 @@
+---
+- name: Solaris11 Zabbix Agent Install
+  hosts: 192.168.56.160
+  gather_facts: true
+
+  tasks:
+
+  - name: Interactive Install
+    expect:
+      command: pkgadd -d /var/spool/pkg/zabbix-agent-3.0.10-1-sol11-i386.pkg
+      responses: 
+        "default: all": "all"
+        "Do you want to continue": "y"
+    register:
+      rslt_zabbix_Agent_Install
+
+
+  - debug: var=rslt_zabbix_Agent_Install

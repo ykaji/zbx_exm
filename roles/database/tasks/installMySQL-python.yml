@@ -1,0 +1,12 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/installMySQL-python.yml
+#
+#=================================================
+
+- name: Install MySQL-python
+  yum:
+    name: MySQL-python
+    state: installed
+

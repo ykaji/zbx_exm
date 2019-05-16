@@ -1,0 +1,16 @@
+- name: abctest
+  hosts: VB30Px
+  gather_facts: true
+
+  tasks:
+
+  - name: get httpd status
+    shell: systemctl show httpd | grep ActiveState | awk -F '=' '{ print $2 }'
+    register:
+      rslt_httpdStatus
+
+  - debug: var=rslt_httpdStatus
+
+
+  - debug: msg="active datte!"
+    when: rslt_httpdStatus.stdout == "active"

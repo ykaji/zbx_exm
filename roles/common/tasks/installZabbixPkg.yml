@@ -1,0 +1,24 @@
+---
+#=================================================
+#
+# Role-Task: common/tasks/installZabbixPkg.yml
+#
+#=================================================
+
+- name: Install "{{ installPkg }}" for Rhel
+  yum:
+    name: "{{ installPkg }}"
+    state: installed
+  when:
+    low_distribution == "rhel"
+
+- name: Install Zabbix Agent for Debian and Ubuntu
+  apt:
+    deb:  "/tmp/zabbix-agent_{{ specify_Ver }}-{{ pkgBrnchNum }}+{{ ansible_distribution_release }}_{{ cpu_Arch }}.deb"
+    autoclean: "yes"
+  when:
+    ("debian" == low_distribution)
+    or ("ubuntu" == low_distribution)
+
+#- pause:
+#    seconds: 30

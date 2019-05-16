@@ -1,0 +1,13 @@
+- debug:
+    msg: "== Start Child Role =="
+
+- debug: var=parent_var
+- debug: var=child_var
+
+
+- debug: 
+    msg: "== included_vars =="
+
+- include_vars:
+    dir: vars
+

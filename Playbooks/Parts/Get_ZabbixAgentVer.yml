@@ -1,0 +1,13 @@
+---
+- name: Get Zabbix Agent Version
+  hosts: OthZCntAgt
+  gather_facts: false
+
+  tasks:
+    - name: Get Version of Zabbix Agent by rpm command
+      shell: rpm -qa |grep zabbix-agent | xargs -d- | awk '{print $3}'
+      register: rpm_zabbix_agent_ver
+
+    - debug: var=rpm_zabbix_agent_ver.stdout
+
+

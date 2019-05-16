@@ -1,0 +1,22 @@
+---
+- name: Solaris11 Zabbix Agent Start
+  hosts: 192.168.56.160
+  gather_facts: false
+
+  tasks:
+
+  - name: registering for svcadm
+    shell: svcadm -v enable -rt -s zabbix-agent
+    ignore_errors: yes
+
+
+  - name: Service Start
+    service:
+      name:    system/zabbix-agent
+      state:   started
+      enabled: yes
+    register:
+      rslt_zabbix_Agent_Start
+
+
+  - debug: var=rslt_zabbix_Agent_Start

@@ -1,0 +1,41 @@
+---
+- name: Stop Zabbix Systems
+  hosts: OthZabbixServer
+  ##hosts: OthZabbixProxy
+  ##hosts: OthZabbixMembers
+  gather_facts: false
+#  remote_user: root
+#  sudo: yes
+
+
+  tasks:
+    - name: Scan Installed Zabbix Package
+      ##shell: rpm -qa |grep -P zabbix-\(server\|proxy\).*
+      shell: yum list installed zabbix\* | awk '{print $1}' | grep -E "server|proxy"
+      register: zabbix_pkgs
+
+    - name: Stop Zabbix Agent
+      systemd:
+        name: zabbix-agent
+        state: stopped
+  
+    - name: Stop Zabbix Proxy
+      systemd:
+        name: zabbix-proxy
+        state: stopped
+      notify: Stop MariaDB
+      when: "'zabbix-proxy-mysql.x86_64' in zabbix_pkgs.stdout"
+
+    - name: Stop Zabbix Server
+      systemd:
+        name: zabbix-server
+        state: stopped
+      notify: Stop MariaDB
+      when: "'zabbix-server-mysql.x86_64' in zabbix_pkgs.stdout"
+
+  handlers:
+    - name: Stop MariaDB
+      systemd:
+        name: mariadb
+        state: stopped
+

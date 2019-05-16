@@ -1,0 +1,27 @@
+#=================================================
+#
+# Role-Vars: zabbix_agent/vars/main.yml
+#
+#=================================================
+
+#Zabbix_Agent_Packages:
+installPkg:
+  - zabbix-agent-{{ Agt_Specify_Ver }}
+  - zabbix-sender-{{ Agt_Specify_Ver }}
+  - zabbix-get-{{ Agt_Specify_Ver }}
+
+specify_Ver: "{{ Agt_Specify_Ver }}"
+
+pkg_name: "zabbix-agent"
+
+autostart_Daemon_Zabbix_Agent: zabbix-agent
+
+pkgBrnchNum: 1
+
+Agt_CnfPath: "/etc/zabbix/zabbix_agentd.conf"
+
+# If Case Erase Target Zabbix Agent Package
+removePkg:
+  - zabbix-agent
+  - zabbix-sender
+  - zabbix-get

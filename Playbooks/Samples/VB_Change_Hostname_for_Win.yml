@@ -1,0 +1,13 @@
+---
+- name: Change Hostname for Windows
+  hosts: VBWin
+  gather_facts: true
+
+  vars:
+    NewHostname: abcdefg
+
+  tasks:
+    - name: Change Hostname
+      win_shell:
+        "Rename-Computer -NewName {{ NewHostname}}" 
+      when: ansible_system == "Win32NT"

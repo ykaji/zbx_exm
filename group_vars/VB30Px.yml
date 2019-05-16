@@ -1,0 +1,28 @@
+---
+#=================================================
+#
+# Group_Vars: VB30Px.yml
+#
+#=================================================
+
+ansible_ssh_user: root
+ansible_ssh_pass: rootoor
+
+Agt_Specify_Ver: 3.0.13
+Px_Specify_Ver:  3.0.10
+
+ServerIP:       192.168.56.131
+ServerActiveIP: 192.168.56.131
+
+# Proxy Config Setting Value
+DBRootUsr:          root
+DBRootPwd:          toor
+DBName:             zabbix_proxy
+DBUser:             zabbix
+DBPassword:         zabbix
+ProxyLocalBuffer:   24
+ProxyOfflineBuffer: 24
+ConfigFrequency:    600
+Timeout:            10
+
+isSv: False

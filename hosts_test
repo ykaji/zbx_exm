@@ -1,0 +1,9 @@
+##[windows]
+#192.168.56.161
+
+#[windows:vars]
+#ansible_ssh_user=Administrator
+#ansible_ssh_pass=NTTCOM1qaz
+#ansible_ssh_port=5986
+#ansible_connection=winrm
+#ansible_winrm_server_cert_validation=ignore

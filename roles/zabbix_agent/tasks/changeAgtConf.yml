@@ -1,0 +1,87 @@
+---
+#=================================================
+#
+# Role-Handler:  zabbix_agent/tasks/changeAgtConf.yml
+#
+#=================================================
+- name: Change Server IP
+  replace:
+    path:    '{{Agt_CnfPath}}'
+    regexp:  '^(Server)=.*'
+    replace: '\1={{ ServerIP }}'
+    backup:   yes
+
+- name: Change ServerActive IP
+  replace:
+    path:    '{{Agt_CnfPath}}'
+    regexp:  '^(ServerActive)=.*'
+    replace: '\1={{ ServerActiveIP }}'
+    backup:   yes
+
+- name: Change Remark Hostname 
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(Hostname=).*'
+    replace: '###\1'
+
+- name: Change Enabled HostnameItem
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(HostnameItem=.*)'
+    replace: '\3'
+
+- name: Change HostMetadataItem
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(HostMetadataItem=.*)'
+    replace: '\3{{ HostMetadataItem }}'
+
+- name: Change AllowRoot Parameter
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(AllowRoot=.*)'
+    replace: 'AllowRoot={{ AllowRoot }}'
+  when:
+    AllowRoot is defined
+
+- name: Change EnableRemoteCommands Parameter
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(EnableRemoteCommands=.*)'
+    replace: 'EnableRemoteCommands={{ EnableRemoteCommands }}'
+  when:
+    EnableRemoteCommands is defined
+
+- name: Change TLS Connect Type
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSConnect=.*)'
+    replace: 'TLSConnect={{ TLSConnect }}'
+  when:
+    TLSConnect is defined
+
+- name: Change TLS Accept Type
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSAccept=.*)'
+    replace: 'TLSAccept={{ TLSAccept }}'
+  when:
+    TLSAccept is defined
+
+- name: Change TLS PSK Identity 
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSPSKIdentity=.*)'
+    replace: 'TLSPSKIdentity={{ TLSPSKIdentity }}'
+  when:
+    TLSPSKIdentity is defined
+
+- name: Change TLS PSK File Path
+  replace:
+    dest:    "{{Agt_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSPSKFile=.*)'
+    replace: 'TLSPSKFile={{ TLSPSKFile }}'
+  when:
+    TLSPSKFile is defined
+
+

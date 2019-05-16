@@ -1,0 +1,10 @@
+---
+#=================================================
+#
+# Role-Task: php/tasks/main.yml
+#
+#=================================================
+
+- name: Replaced Timezone in php.ini
+  import_tasks: changePhpIni.yml
+

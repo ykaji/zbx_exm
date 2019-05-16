@@ -1,0 +1,16 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/dropDb.yml
+#
+#=================================================
+
+- name: Drop Database
+  mysql_db:
+    name:           "{{ DBName }}"
+    login_user:     "{{ DBRootUsr }}"
+    login_password: "{{ DBRootPwd }}"
+    state:          absent
+  register:
+    rslt_drpDB
+

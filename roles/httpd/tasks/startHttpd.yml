@@ -1,0 +1,13 @@
+---
+#=================================================
+#
+# Role-Task: httpd/tasks/startHttpd.yml
+#
+#=================================================
+
+- name: Start httpd
+  service:
+    name:    httpd
+    state:   started
+    enabled: yes  
+

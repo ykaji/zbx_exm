@@ -1,0 +1,23 @@
+#=================================================
+#
+# role: repository/rhel/tasks/main.yml
+#
+#=================================================
+
+- name: Erase zabbix-release for RHEL # <-- Required
+  yum:
+    name:  zabbix-release
+    state: removed
+
+- name: yum clean all   # <-- Required
+  shell: "yum clean all"
+
+- name: Install Zabbix Repository for RHEL
+  yum:
+    name: "{{ zabbix_Base_Url }}/{{ ansible_distribution_major_version }}/x86_64/zabbix-release-{{ spcfyMjVer }}-{{ repoBrnchNum }}.el{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+    update_cache: yes
+
+- name: Repository cache clean for RHEL
+  shell: "yum clean all"
+

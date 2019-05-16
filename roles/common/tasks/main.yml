@@ -1,0 +1,111 @@
+---
+#=================================================
+#
+# Role-Task: common/tasks/main.yml
+#
+#=================================================
+- name: Get Distribution lowercase name
+  include_tasks: getLowerCaseDistribution.yml
+
+### Get Major Version Number ###
+- name: Get Specify Version
+  getversion:
+    specify: "{{specify_Ver}}"
+  register: rslt_spcfyVer
+  when:
+    - ansible_system != "Win32NT"
+
+- name: Set Major Version to Variable
+  set_fact:
+    spcfyMjVer: "{{rslt_spcfyVer.version}}"
+  when:
+    - ansible_system != "Win32NT"
+
+#------------------------------------------------
+# Set Repository Branch Number
+#------------------------------------------------
+- name: Set Repository Branch Number to Variable. When CentOS7
+  set_fact:
+    repoBrnchNum: 2
+  when:
+    - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == "7"
+    - spcfyMjVer == "3.4"
+
+- name: Set Repository Branch Number to Variable. When Ubuntu
+  set_fact:
+    repoBrnchNum: 2
+  when:
+    ansible_distribution == "Ubuntu"
+    and ((spcfyMjVer == "2.2" and ansible_distribution_major_version == "12")
+    or (spcfyMjVer == "2.2" and ansible_distribution_major_version == "14")
+    or (spcfyMjVer == "3.0" and ansible_distribution_major_version == "14")
+    or (spcfyMjVer == "3.0" and ansible_distribution_major_version == "16")
+    or (spcfyMjVer == "4.0" and ansible_distribution_major_version == "14")
+    or (spcfyMjVer == "4.0" and ansible_distribution_major_version == "16"))
+
+
+- name: Set Repository Branch Number to Variable. When Debian
+  set_fact:
+    repoBrnchNum: 2
+  when:
+    ansible_distribution == "Debian"
+    and ((spcfyMjVer == "2.2" and ansible_distribution_major_version == "6")
+    or (spcfyMjVer == "2.2" and ansible_distribution_major_version == "7")
+    or (spcfyMjVer == "3.0" and ansible_distribution_major_version == "7")
+    or (spcfyMjVer == "3.0" and ansible_distribution_major_version == "8")
+    or (spcfyMjVer == "3.0" and ansible_distribution_major_version == "9")
+    or (spcfyMjVer == "4.0" and ansible_distribution_major_version == "7")
+    or (spcfyMjVer == "4.0" and ansible_distribution_major_version == "8")
+    or (spcfyMjVer == "4.0" and ansible_distribution_major_version == "9"))
+
+
+#------------------------------------------------
+# Set Package Branch Number
+#------------------------------------------------
+- name: Set Package Branch Number to Variable. When CentOS 6/7
+  set_fact:
+    pkgBrnchNum: 2
+  when:
+    ansible_distribution == "CentOS"
+    and ((specify_Ver == "2.2.7" and ansible_distribution_major_version == "7")
+    or (specify_Ver == "3.0.1" and ansible_distribution_major_version == "6")
+    or (specify_Ver == "3.0.8" and ansible_distribution_major_version == "7"))
+
+- name: Set Package Branch Number to Variable. When Debian
+  set_fact:
+    pkgBrnchNum: 2
+  when:
+    ansible_distribution == "Debian"
+    and ((specify_Ver == "4.0.0" and ansible_distribution_major_version == "7")
+    or   (specify_Ver == "4.0.0" and ansible_distribution_major_version == "8")
+    or   (specify_Ver == "4.0.0" and ansible_distribution_major_version == "9"))
+
+- name: Set Package Branch Number to Variable. When Ubuntu
+  set_fact:
+    pkgBrnchNum: 2
+  when:
+    ansible_distribution == "Ubuntu"
+    and ((specify_Ver == "3.0.3" and ansible_distribution_major_version == "16")
+    or   (specify_Ver == "4.0.0" and ansible_distribution_major_version == "14")
+    or   (specify_Ver == "4.0.0" and ansible_distribution_major_version == "16"))
+
+#------------------------------------------------
+# Set Other Value
+#------------------------------------------------
+- name: Set CPU Architecture to Variable
+  set_fact:
+    cpu_Arch: "{{(ansible_architecture == 'x86_64') | ternary('amd64', 'i386')}}"
+  when:
+    ansible_distribution != "CentOS"
+    and ansible_system != "Win32NT"
+
+- name: Get Lowcase Distribution Name
+  include_tasks: getLowerCaseDistribution.yml
+
+- name: Get Distribution Case of CentOS
+  set_fact:
+    low_distribution: rhel
+  when:
+    ansible_distribution == "CentOS"
+

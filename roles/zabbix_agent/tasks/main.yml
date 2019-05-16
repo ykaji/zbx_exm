@@ -1,0 +1,58 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_agent/tasks/main.yml
+#
+#=================================================
+
+- name: Include Common Role
+  include_role: 
+    name: common
+
+- name: When "rhel" of Linux OS
+  include_role:
+    name:  "zabbix_agent/{{ low_distribution }}"
+    allow_duplicates: no
+  when:
+    low_distribution == "rhel"
+
+- name: When "ubuntu" of Linux OS
+  include_role:
+    name:  "zabbix_agent/{{ low_distribution }}"
+    allow_duplicates: no
+  when:
+    low_distribution == "ubuntu"
+
+- name: When "debian" of Linux OS
+  include_role:
+    name:  "zabbix_agent/{{ low_distribution }}"
+    allow_duplicates: no
+  when:
+    low_distribution == "debian"
+
+- name: When "solaris" of Linux OS
+  include_role:
+    name:  "zabbix_agent/{{ low_distribution }}"
+    allow_duplicates: no
+  when:
+    low_distribution == "solaris"
+
+- name: When Windows OS
+  include_role:
+    name:  zabbix_agent/windows
+  when:
+    ansible_system == "Win32NT"
+
+- name: Change Zabbix Agent Config File of "{{ low_distribution }}"
+  include_tasks: changeAgtConf.yml
+  when:
+    ansible_system != "Win32NT"
+    and isSv != true
+
+- name: Restart Zabbix Agent of "{{ low_distribution }}" 
+  import_role:
+    name:       common
+    tasks_from: startZabbixPkg.yml
+  when:
+    ansible_system != "Win32NT"
+

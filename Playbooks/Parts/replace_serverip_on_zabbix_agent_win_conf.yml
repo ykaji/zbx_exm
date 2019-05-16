@@ -1,0 +1,16 @@
+---
+- name: Replace Server IP Address in zabbix_agentd.win.conf
+  hosts: OthZWinAgnt
+  gather_facts: true
+
+  vars:
+    SV_IP: "10.2.21.31"
+    SV_Act_IP: "10.2.21.31"
+    CofigFile: {{zabbix_agent_inatall_path}}conf\\{{zabbix_agent_conf}}
+
+  tasks:
+    - name: Replace Server IP Address 
+      win_command:
+        'Get-Content -Path {{ConfigFile}} | tee -Variable ConfOnMem`
+        $ConfOnMem -replace "^Server=.*", "Server={{SV_IP}}"| Set-Content -Path {{ConfigFile}} -Encode utf8'
+     when: ansible_system == "Win32NT"

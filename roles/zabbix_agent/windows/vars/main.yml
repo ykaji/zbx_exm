@@ -1,0 +1,20 @@
+#=================================================
+#
+# Role-Vars: zabbix_agent/windows/vars/main.yml
+#
+#=================================================
+
+#Zabbix_Agent_Packages:
+#  - zabbix-agent-{{ Agt_Specify_Ver }}
+#  - zabbix-sender-{{ Agt_Specify_Ver }}
+#  - zabbix-get-{{ Agt_Specify_Ver }}
+
+Autostart_Daemon_Zabbix_Agent: zabbix-agent
+
+tempDir:    "C:\\temp\\"
+installDir: "C:\\zabbix\\"
+logDir:     "C:\\zabbix\\log\\"
+zipFile:    "zabbix_agents_{{Agt_Specify_Ver}}.win.zip"
+agtdExe:    "zabbix_agentd.exe"
+confFile:   "zabbix_agentd.win.conf"
+

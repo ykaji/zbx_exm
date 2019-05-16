@@ -1,0 +1,97 @@
+---
+#=================================================
+#
+# Role-Task: common/tasks/compareVer.yml
+#
+#=================================================
+
+### Zabbix Agent CentOS or RHEL ###
+- name: Get Current Installed Version. Case of Not Windows
+  shell:
+    rpm -qa | grep "{{ pkg_name }}" | awk -F "-" '{ print $3 }'
+  register: rslt_agtCrntVer
+  when:
+    "'mysql' not in pkg_name"
+    and low_distribution == "rhel"
+  ignore_errors: true
+
+- name: Get Current Installed Version. Case of Not Windows
+  set_fact:
+    crntVer: "{{rslt_agtCrntVer.stdout}}"
+  when:
+    agt_installed
+
+### Zabbix Server or Zabbix Proxy ###
+- name: Get Current Installed Version. Case of Server or Proxy
+  shell:
+    rpm -qa | grep "{{ pkg_name }}" | awk -F "-" '{ print $4 }'
+  register: rslt_svpxCrntVer
+  when:
+    "'mysql' in pkg_name" 
+    and low_distribution == "rhel"
+  ignore_errors: true
+
+- name: Set Current Installed Version to Variable. Case of Server or Proxy
+  set_fact:
+    crntVer: "{{rslt_svpxCrntVer.stdout}}"
+  when:
+    rslt_svpxCrntVer.changed == true
+
+### Version Zeropadding ###
+- name: Case of Not Windows. Current Version("{{ crntVer }}") Number Zeropadding. 
+  zeropadding:
+    verrevision: "{{ crntVer }}"
+  when:
+    ansible_system != "Win32NT"
+  register: rslt_ZrCrntVer
+  ignore_errors: true
+
+- name: Case of Not Windows. Specify Version("{{ specify_Ver }}") Number Zeropadding. 
+  zeropadding:
+    verrevision: "{{ specify_Ver }}"
+  register: rslt_ZrSpcfyVer
+  when:
+    ansible_system != "Win32NT"
+  ignore_errors: true
+
+- set_fact:
+    zrCrntVer: "{{ rslt_ZrCrntVer.zeropad_version }}"
+    zrSpcfyVer: "{{ rslt_ZrSpcfyVer.zeropad_version }}"
+  when:
+    ansible_system != "Win32NT"
+    and agt_installed
+
+- name: Set Value for currentIs "NotInstalled"
+  set_fact:
+    crntIs: "NotInstalled"
+  when:
+    agt_installed == false
+
+### Judge of Current Version ###
+- name: Set Value for currentIs "New"
+  set_fact:
+    crntIs: "New"
+  when:
+    agt_installed
+    and zrCrntVer > zrSpcfyVer
+
+- name: Set Value for currentIs "Old"
+  set_fact:
+    crntIs: "Old"
+  when:
+    agt_installed
+    and zrCrntVer < zrSpcfyVer
+
+- name: Set Value for currentIs "Same"
+  set_fact:
+    crntIs: "Same"
+  when:
+    agt_installed
+    and zrCrntVer == zrSpcfyVer
+
+
+#- pause:
+#    echo:    yes
+#    minutes: 3
+#    prompt:  "pause 3min"
+

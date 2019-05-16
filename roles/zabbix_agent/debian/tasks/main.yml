@@ -1,0 +1,32 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_agent/debian/tasks/main.yml
+#
+#=================================================
+
+#- name: Get Current Installed Version Case Debian
+#  shell: dpkg -l zabbix-agent |grep zabbix-agent |awk '{ print $3 }'|sed -e 's/[0-9]:\([0-9\.]\+\).*/\1/g'
+#  register: rslt_crntVer
+
+#- name: Set Current Version to Variable
+#  set_fact:
+#    crntVer: "{{rslt_crntVer.stdout}}"
+
+- name: Purge Zabbix Agent for Debian
+  include_role:
+    name:       common
+    tasks_from: removeZabbixPkg.yml
+
+- name: Erase Current Repository and Specifyed Repository install for Debian
+  include_role:
+    name: repository
+
+- name: "Download Zabbix {{ specify_Ver }} Package for {{ ansible_distribution }}"
+  shell: "cd /tmp; wget http://repo.zabbix.com/zabbix/{{ spcfyMjVer }}/{{ low_distribution }}/pool/main/z/zabbix/zabbix-agent_{{ specify_Ver }}-{{ pkgBrnchNum }}+{{ ansible_distribution_release }}_{{ cpu_Arch }}.deb"
+
+- name: Install Zabbix Agent for Debian
+  include_role:
+    name:       common
+    tasks_from: installZabbixPkg.yml
+

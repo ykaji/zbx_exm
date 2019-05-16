@@ -1,0 +1,5 @@
+ansible_ssh_user: zabicom.jp\y.kaji
+ansible_ssh_pass: 201805K@zi
+ansible_port: 5986
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore

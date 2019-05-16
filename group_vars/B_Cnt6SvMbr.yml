@@ -1,0 +1,26 @@
+---
+#=================================================
+#
+# Group_Vars: OthZSv.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: zbx123$%&
+
+Agt_Specify_Ver: 1.8.22
+Sv_Specify_Ver: 1.8.22
+
+# Server Config Setting Value
+DBRootUsr:             root
+DBRootPwd:             toor
+DBName:                zabbix
+DBUser:                zabbix
+DBPassword:            zabbix
+CacheSize:             256M
+HistoryCacheSize:      192M
+HistoryIndexCacheSize: 32M
+TrendCacheSize:        32M
+ValueCacheSize:        192M
+VMwareTimeout:         120
+
+isSv: true

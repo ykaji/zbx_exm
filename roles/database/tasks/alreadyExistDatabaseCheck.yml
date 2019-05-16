@@ -1,0 +1,12 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/alreadyExistDatabaseCheck.yml
+#
+#=================================================
+
+- name: Already Exist Check of Database
+  shell:
+    mysql -u{{ DBRootUsr }} -p{{ DBRootPwd }} -e "show databases"
+  register:
+    rslt_extntSchm

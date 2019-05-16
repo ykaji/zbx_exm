@@ -1,0 +1,72 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_proxy/tasks/changeConf.yml
+#
+#=================================================
+
+- name: Change ServerIP in the zabbix_proxy.conf
+  replace:
+    path:    '{{Px_CnfPath}}'
+    regexp:  '^(Server)=.*'
+    replace: '\1={{ PxServerIP }}'
+    backup:   yes
+
+- name: Change Hostname in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(Hostname).*'
+    replace: '\1={{ansible_hostname}}'
+    backup:   no
+
+- name: Change DBUser in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(DBUser).*'
+    replace: '\1={{DBUser}}'
+    backup:   no
+
+- name: Change DBPassword in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (DBPassword).*'
+    replace: '\1={{DBPassword}}'
+    backup:   no
+
+- name: Change ProxyLocalBuffer in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ProxyLocalBuffer).*'
+    replace: '\1={{ProxyLocalBuffer}}'
+    backup:   no
+
+- name: Change ProxyOfflineBuffer in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ProxyOfflineBuffer).*'
+    replace: '\1={{ProxyOfflineBuffer}}'
+    backup:   no
+
+- name: Change ConfigFrequency in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ConfigFrequency).*'
+    replace: '\1={{ConfigFrequency}}'
+    backup:   no
+
+- name: Change Timeout in the zabbix_proxy.conf
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(Timeout).*'
+    replace: '\1={{Timeout}}'
+    backup:   no
+
+#- name: Schema Archive File Decompress
+#  shell: gunzip -c "{{ zPxSqlFlPth }}{{ zPxSchmFl }}.gz" > {{ schmDCmpDst }}{{ zPxSchmFl }}
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"
+
+#- name: Schema Import
+#  shell: "mysql -u{{ DBUser }} -p{{ DBPassword }} {{ DBName }} < {{ schmDCmpDst }}{{ zPxSchmFl }}"
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"

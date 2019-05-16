@@ -1,0 +1,10 @@
+---
+- name: test
+  hosts: localhost
+  tasks:
+    - name: input test
+      pause: 
+        prompt: "please input any key..."
+      register: any_key
+
+    - debug: var=any_key  

@@ -1,0 +1,8 @@
+#==============================
+#
+# Role: /etc/ansible/role/repository/ubuntu/handler/main.yml
+#
+#==============================
+
+- name: Repository make cache
+  shell: apt update

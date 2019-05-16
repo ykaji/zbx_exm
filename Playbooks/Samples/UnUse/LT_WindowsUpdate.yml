@@ -1,0 +1,9 @@
+---
+- name: Windows Update
+  hosts: LTZWinAgt
+  gather_facts: true
+
+  tasks:
+    - win_updates:
+      when: ansible_system == "Win32NT"
+       

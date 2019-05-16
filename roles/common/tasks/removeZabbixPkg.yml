@@ -1,0 +1,25 @@
+---
+#=================================================
+#
+# Role-Task: common/tasks/removeZabbixPkg.yml
+#
+#=================================================
+
+- name: Remove "{{ removePkg }}"
+  yum:
+    name: "{{ removePkg }}"
+    state: removed
+  when:
+    low_distribution == "rhel"
+
+#- name: Display low_distribution
+#  debug: var=low_distribution
+
+- name: Purge Zabbix Agent for Debian and Ubuntu
+  shell: dpkg -P zabbix-agent
+  when:
+    ("debian" == low_distribution)
+    or ("ubuntu" == low_distribution)
+
+#- pause:
+#    seconds: 30

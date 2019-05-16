@@ -1,0 +1,100 @@
+---
+- name: Install Zabbix Agent for Windows
+  hosts: 192.168.56.164
+  gather_facts: true
+
+  vars:
+    install_type: "{{ install_type | lower }}"
+    win_arch: "{{ ansible_architecture[0:2] }}"
+    copy2dest: 'C:\temp\'
+
+  vars_prompt:
+    name: install_type
+    prompt:  "which input [ binary | msi ]"
+    default: binary
+    private: no
+
+  tasks:
+    - fail:
+        msg: "no input"
+      when: install_type|length|int == 0
+
+#    - debug: msg="{{ zabbix_agent_msi_folder }}{{ zabbix_agent_msi }}"
+    - debug: msg="{{ win_arch }}"
+#    - debug: msg="{{ ansible_architecture | int }}"
+#    - debug: msg="{{ ansible_architecture }}"
+
+### Create Directory on Remote Sever ###
+    - name: Create TEMP Directory
+      win_file:
+        path:  "{{ copy2dest }}"
+        state: directory
+      when: 
+        - ansible_system == "Win32NT"
+
+
+### Send MSI File of Zabbix Agent ###
+    - name: Send MSI File
+      win_copy: 
+        src:   "{{Msi_SRC_Path}}{{Msi_File}}"
+        dest:  "{{ copy2dest }}"
+      when: 
+        - ansible_system == "Win32NT" and install_type == "msi"
+
+
+### Send Binary File of Zabbix Agent ###
+    - name: Send Zip File
+      win_copy: 
+        src:   "{{Bin_SRC_Path}}{{ZAgt_Zip_File}}"
+        dest:  "{{ copy2dest }}"
+        state: file
+      when: 
+        - ansible_system == "Win32NT" and install_type == "binary"
+
+
+### Zabbix Agent Install###
+### Case MSI ###
+    - name: Install Zabbix Agent for Windows From MSI
+#      win_msi:
+#        path: "{{ copy2dest }}ZABICOM_Agent.msi"
+#        extra_args: "/quiet"
+#      register: msi_install_result
+      win_command: "powershell {{ copy2dest }}ZABICOM_Agent.msi /quiet"
+      when: 
+        - ansible_system == "Win32NT" and install_type == "msi"
+ 
+    - debug:
+        var=msi_install_result
+
+### Case Binary ###
+    - name: Create Zabbix Agent Directory
+      win_file: 
+        path:  "{{ZAgt_Base_Path}}"
+        state: directory
+      when: 
+        - ansible_system == "Win32NT" and install_type == "binary"
+
+    - name: unZip Zabbix Agent Zip File
+      win_unzip:
+        src: "{{ copy2dest }}{{ZAgt_Zip_File}}"
+        dest: "{{ZAgt_Base_Path}}"
+        rm: False
+      when: 
+        - ansible_system == "Win32NT" and install_type == "binary"
+
+    - name: Install Zabbix Agent for Windows From Binary
+      win_shell:
+        "{{ZAgt_Base_Path}}bin\\win{{win_arch}}\\{{ZAgtd_File}} -c {{ZAgt_Base_Path}}conf\\{{ZAgtCnf_File}} -i"
+      when: 
+        - ansible_system == "Win32NT" and install_type == "binary"
+
+
+### Zabbix Package Autostart ###
+    - name: Zabbix Agent Autostart Setting
+      win_service:
+        name:       "Zabbix Agent"
+        start_mode: auto
+        state:      stopped
+      when: 
+        - ansible_system == "Win32NT"
+

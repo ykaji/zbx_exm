@@ -1,0 +1,16 @@
+---
+- name: install zabbix-agent for ubudebi
+  hosts: VBUbDb
+  gather_facts: true
+
+  tasks:
+## for Debian and Ubuntu ##
+    - name: Install_Zabbix Agent Packages for {{ansible_distribution}}
+      apt:
+        name: "zabbix-agent=1:{{specify_version}}-1+{{ansible_distribution_release}}"
+        # name: zabbix-agent
+        state: latest
+        #update_cache: yes
+      when:
+        (ansible_distribution == "Ubuntu") or
+        (ansible_distribution == "Debian")

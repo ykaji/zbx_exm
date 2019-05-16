@@ -1,0 +1,16 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/createDb.yml
+#
+#=================================================
+
+- name: Create Database
+  mysql_db:
+    name:           "{{ DBName }}"
+    login_user:     "{{ DBRootUsr }}"
+    login_password: "{{ DBRootPwd }}"
+    encoding:       utf8
+  register:
+    rslt_crtDB
+

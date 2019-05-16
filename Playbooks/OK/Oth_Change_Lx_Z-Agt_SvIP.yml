@@ -1,0 +1,16 @@
+- name: Change Server IP in zabbix_agentd.cnf
+  hosts: OthZLxAgt
+  gather_facts: false
+
+  vars:
+    CnfPath:    /etc/zabbix/zabbix_agentd.conf
+    ReplaceVal: 10.20.30.40
+
+  tasks:
+  - replace:
+      path:    '{{CnfPath}}'
+      regexp:  '^(Server.*)=.*'
+      replace: '\1={{ ReplaceVal }}'
+      backup:   yes
+    when: ansible_system == "Linux"
+

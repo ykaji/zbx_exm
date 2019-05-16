@@ -1,0 +1,13 @@
+---
+- name: Create Zabbix Enviroment for Zabbix Server on Oracle Virtual Box
+  hosts: VB30Sv
+  gather_facts: true
+
+  roles:
+    - httpd
+    - php
+    - zabbix_server
+    - database
+    - zabbix_agent
+
+

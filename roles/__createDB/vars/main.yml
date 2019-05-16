@@ -1,0 +1,12 @@
+---
+#=================================================
+#
+# Role-Var: createDB/vars/main.yml
+#
+#=================================================
+
+schmDCmpDst: /tmp/
+dbRtUsr:     root
+dbRtPwd:     toor
+
+

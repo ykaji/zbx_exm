@@ -1,0 +1,13 @@
+---
+#=================================================
+#
+# Role-Task: httpd/tasks/main.yml
+#
+#=================================================
+
+- name: Install httpd
+  include_tasks: installHttpd.yml
+
+- name: Start httpd
+  include_tasks: startHttpd.yml
+

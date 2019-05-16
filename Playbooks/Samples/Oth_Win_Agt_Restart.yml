@@ -1,0 +1,11 @@
+---
+- name: Zabbix Agent ReStart On Windows
+  hosts: OthZWinAgt
+  gather_facts: true
+
+  tasks:
+    - name: Zabbix Agent Restart
+      win_service:
+        name: "Zabbix Agent"
+        state: restarted
+      when: ansible_system == "Win32NT"

@@ -1,0 +1,13 @@
+ansible_ssh_user: root
+ansible_ssh_pass: zbx123$%&
+
+Agt_Specify_Ver: 1.8.22
+
+ServerIP:             10.11.63.12
+ServerActiveIP:       10.11.63.12
+HostMetadataItem:     system.uname
+AllowRoot:            1
+EnableRemoteCommands: 1
+
+isSv: False
+

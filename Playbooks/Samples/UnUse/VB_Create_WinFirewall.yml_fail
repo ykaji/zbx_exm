@@ -1,0 +1,17 @@
+---
+- name: Create Windows Firewall rule for Windows OS
+  hosts: VBWin
+  gather_facts: true
+
+  tasks:
+    - name: add Firewall rule
+      win_firewall_rule:
+        name: "ZabbixAgent"
+#        program: C:\zabbix\bin\win64\zabbix_agentd.exe
+        program: "%SystemDrive%\\zabbix\\bin\\win64\\zabbix_agentd.exe"
+        direction: in
+        action: allow
+        protocol: any
+        state: present
+        profile: Private
+      when: ansible_system == "Win32NT"

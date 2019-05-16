@@ -1,0 +1,13 @@
+#=================================================
+#
+# Role-Vars: zabbix_agent/solaris/vars/main.yml
+#
+#=================================================
+
+
+tempDir: '/tmp/'
+pkgSpoolDir: '/var/spool/pkg/'
+
+
+pkgFile: "zabbix-agent-{{Agt_Specify_Ver}}-1-sol{{os_ver}}-{{cpu_Arch}}.pkg"
+

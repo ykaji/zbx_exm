@@ -1,0 +1,64 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_proxy/tasks/main.yml
+#
+#=================================================
+
+- name: Set Specified Version to Variable
+  set_fact:
+    specify_Ver: "{{ Px_Specify_Ver }}"
+
+- name: Execute common role
+  import_role:
+    name: common
+
+#- name: Compare the Current Ver with the Specied Ver
+#  include_role:
+#    name:       common
+#    tasks_from: compareVer.yml
+
+- name: Stop Zabbix Proxy for CentOS
+  include_role:
+    name:       common
+    tasks_from: stopZabbixPkg.yml
+#  when:
+#    crntIs == "New"
+
+- name: Remove Zabbix Proxy for CentOS
+  include_role:
+    name:       common
+    tasks_from: removeZabbixPkg.yml
+#  when:
+#    crntIs == "New"
+
+- name: Erase Current Repository and Specifyed Repository install for CentOS
+  include_role:
+    name: repository
+
+#- name: Set Install Packages to Variable
+#  set_fact:
+#    installPkg: "{{ zabbix_proxy_packages }}"
+
+- name: Install Zabbix Proxy Packages for CentOS
+  include_role:
+    name:       common
+    tasks_from: installZabbixPkg.yml
+
+- name: Change Proxy Config File
+  include_tasks: changeZPxConf.yml
+
+#- name: Schema Archive File Decompress
+#  shell: gunzip -c "{{ zPxSqlFlPth }}{{ zPxSchmFl }}.gz" > {{ schmDCmpDst }}{{ zPxSchmFl }}
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"
+
+#- name: Schema Import
+#  shell: "mysql -u{{ DBUser }} -p{{ DBPassword }} {{ DBName }} < {{ schmDCmpDst }}{{ zPxSchmFl }}"
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"
+
+- name: Start Zabbix Proxy
+  include_role:
+    name:       common
+    tasks_from: startZabbixPkg.yml

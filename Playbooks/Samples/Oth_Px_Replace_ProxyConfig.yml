@@ -1,0 +1,25 @@
+---
+- name: Replace Value in a Zabbix Proxy Config
+  hosts: OthZPx
+  gather_facts: true
+
+
+  tasks:
+  - set_fact:
+      CnfPath: /etc/zabbix/zabbix_proxy.conf
+      ProxyLocalBuffer:   24
+      ProxyOfflineBuffer: 24
+
+  - name: Change ProxyLocalBuffer
+    replace:
+      dest:    "{{CnfPath}}"
+      regexp:  '^..(ProxyLocalBuffer).*'
+      replace: '\1={{ProxyLocalBuffer}}'
+      backup:   no
+
+  - name: Change ProxyOfflineBuffer
+    replace:
+      dest:    "{{CnfPath}}"
+      regexp:  '^# (ProxyOfflineBuffer).*'
+      replace: '\1={{ProxyOfflineBuffer}}'
+      backup:   no

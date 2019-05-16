@@ -1,0 +1,49 @@
+---
+- name: Zabbix Repository Install for Linux
+  hosts: OthZCntAgt
+  gather_facts: true
+
+  vars:
+    - Version: 3.0
+
+
+  tasks:
+    - name: yum clean all  # <-- Required
+      shell: "yum clean all"
+      when:
+        - ansible_distribution == "CentOS" 
+
+    - name: yum erase zabbix-release  # <-- Required
+      yum:
+        name: zabbix-release
+        state: removed
+      when:
+        - ansible_distribution == "CentOS" 
+
+
+    - name: Install Zabbix {{Version}} repository of CentOS {{ansible_distribution_major_version}}.x
+      yum:
+        name: "http://repo.zabbix.com/zabbix/{{Version}}/rhel/{{ansible_distribution_major_version}}/x86_64/zabbix-release-{{Version}}-1.el{{ansible_distribution_major_version}}.noarch.rpm"
+#    baseurl: "http://repo.zabbix.com/zabbix/{{Version}}/rhel/{{ansible_distribution_major_version}}/x86_64/"
+#    file: "zabbix-release-{{Version}}-1.el{{ansible_distribution_major_version}}.noarch.rpm"
+#    description: "zabbix-release {{Version}}"
+        state: present
+        update_cache: yes
+      when:
+        - ansible_distribution == "CentOS" 
+
+#    - name: yum make cache
+#      command: yum makecache
+#      when:
+#        - ansible_distribution == "CentOS" 
+
+    - name: available install zabbix agent list
+      shell: yum list zabbix-agent
+      register: zabbixagent_list
+      when:
+        - ansible_distribution == "CentOS" 
+
+    - debug: var=Version
+
+    - debug: var=zabbixagent_list
+       

@@ -1,0 +1,11 @@
+---
+- name: Install Zabbix Agent for Linux and Windows on Longtime Exam
+  hosts: LTZPx01Mbr, LTZPx02MbrPsk, LTZPx03Mbr, LTZPx04MbrPsk, LTZCntAgt, LTZCntAgtPsk, LTZWinAgt, 10.2.21.34, 10.2.21.38
+#  hosts:  LTZPx02Mbr, LTZPx04Mbr
+#  hosts:  LTZPx01Mbr, LTZPx03Mbr, LTZCntMbr, LTZWinAgt
+#  hosts:  LTZCntMbr
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

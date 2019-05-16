@@ -1,0 +1,26 @@
+---
+- name: test
+  hosts: localhost
+
+  vars:
+    len_input: "{{ input_var|length }}"
+
+  vars_prompt:
+    - name: input_var
+      prompt: "please input any key..."
+      defalut: binary
+      private: no
+
+  tasks:
+    - debug: var=input_var
+
+    - debug: var=len_input
+
+    - fail:
+        msg:  "not input" 
+      when: len_input|int == 0 
+
+    - debug:
+        msg: "noto zero"
+      when: len_input|int >= 0
+

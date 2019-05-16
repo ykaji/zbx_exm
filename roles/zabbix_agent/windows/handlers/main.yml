@@ -1,0 +1,66 @@
+---
+#=================================================
+#
+# Role-Handler: zabbix_agent/windows/handlers/main.yml
+#
+#=================================================
+
+#- name: Change Server IP
+#  replace:
+#    path:    '{{CnfPath}}'
+#    regexp:  '^(Server)=.*'
+#    replace: '\1={{ ServerIP }}'
+#    backup:   yes
+
+
+#- name: Change ServerActive IP
+#  replace:
+#    path:    '{{CnfPath}}'
+#    regexp:  '^(ServerActive)=.*'
+#    replace: '\1={{ ServerActiveIP }}'
+#    backup:   yes
+
+
+#- name: Change Hostname
+#  replace:
+#    dest:    "{{CnfPath}}"
+#    regexp:  '^(Hostname=).*'
+#    replace: '\1{{ansible_hostname}}'
+#    backup:   yes
+
+
+- name: Change Start Mode is Auto
+  win_service:
+    name:       "Zabbix Agent"
+    start_mode: auto
+    state: started
+
+
+#- name: Stop Service
+#  win_service:
+#    name:  "Zabbix Agent"
+#    state: stopped
+
+
+- name: Start Service
+  win_service:
+    name:  "Zabbix Agent"
+    state: started
+
+#- name: Add Firewall Rule Specified Port
+#  win_firewall_rule:
+#    name:      "Zabbix Agent"
+#    localport: 10050
+#    direction: in
+#    action:    allow
+#    protocol:  TCP
+#    profiles:  "domain,private,public"
+#    state:     present
+#    force:     yes
+
+
+#- name: UnZip Zabbix Agent Zip File
+#  win_unzip:
+#    src:  "{{tempDir}}{{zipFile}}"
+#    dest: "{{installDir}}"
+#    rm: False

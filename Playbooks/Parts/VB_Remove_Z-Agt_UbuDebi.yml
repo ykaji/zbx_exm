@@ -1,0 +1,13 @@
+---
+- name: remove zabbix-agent for ubudebi
+  hosts: VBUbDb
+  gather_facts: true
+
+  tasks:
+## for Debian and Ubuntu ##
+    - name: Remove Zabbix Agent and Zabbix Release from {{ansible_distribution}}
+      shell:
+        dpkg -P  zabbix-agent zabbix-release
+      when:
+        (ansible_distribution == "Ubuntu") or
+        (ansible_distribution == "Debian")

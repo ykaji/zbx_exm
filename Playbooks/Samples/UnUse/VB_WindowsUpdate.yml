@@ -1,0 +1,10 @@
+---
+- name: Windows Update
+  hosts: VBWin
+  gather_facts: true
+
+  tasks:
+    - win_updates:
+        state: searched
+      when: ansible_system == "Win32NT"
+       

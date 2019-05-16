@@ -1,0 +1,8 @@
+---
+- name: Windows Update for Windows node
+  hosts: OthZWinAgt
+  gather_facts: false
+
+  roles:
+    - windows_update
+

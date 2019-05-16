@@ -1,0 +1,35 @@
+---
+- name: Change Hostname
+  hosts: OthZabbixLinuxMembers
+  gather_facts: true
+
+  vars:
+    oldhostname: Z3005
+    newhostname: Z3008
+
+  tasks:
+    - name: Replace Hostname for CentOS 6.x
+      replace:
+        dest:    /etc/sysconfig/network
+        regexp:  '^(HOSTNAME=){{oldhostname}}(.*)$'
+        replace: '\1{{newhostname}}\2'
+      register: centos6_result
+      when: 
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_major_version == "6"
+
+    - debug: msg={{centos6_result}}
+ 
+    - name: Replace Hostname for CentOS 7.x, Ubuntu and Debian
+      replace:
+        dest:    /etc/hostname
+        regexp:  '^{{oldhostname}}(.*)$'
+        replace: '{{newhostname}}\1'
+      register: other_centos6_result
+      when:
+        ( ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" )
+        or ansible_distribution == "Ubuntu"
+        or ansible_distribution == "Debian" 
+    
+    - debug: msg={{other_centos6_result}}
+    

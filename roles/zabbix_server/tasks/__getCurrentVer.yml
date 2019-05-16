@@ -1,0 +1,16 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_server/tasks/getCurrentVer.yml
+#
+#=================================================
+
+- name: Get Current Version
+  shell:
+    rpm -qa | grep zabbix-server-mysql | awk -F "-" '{ print $4 }'
+  register: rslt_crntVer
+
+- name: Set Current Version to Variable
+  set_fact:
+    crntVer: "{{rslt_crntVer.stdout}}"
+

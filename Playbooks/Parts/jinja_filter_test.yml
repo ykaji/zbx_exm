@@ -1,0 +1,24 @@
+---
+- name: filter test
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    Value21: 2.2.5
+    Value22: 2.13.3
+    Value31: 3.0.0
+    Value32: "3.21.0"
+    Value32_cnv: "{{ Value22 | replace('.', ',') }}"
+
+  tasks:
+    - debug: "msg={{ Value21 | length() }}"
+    - debug: "msg={{ Value22 | length() }}"
+    - debug: "msg={{ Value21 | list() }}"
+    - debug: "msg={{ Value22 | list() }}"
+   
+{% f valiable is defined %}
+  value of variable: {{ variable }}
+{% else %}
+  variable is not defined
+{% endif %} 
+

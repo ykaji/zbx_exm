@@ -1,0 +1,14 @@
+---
+#=================================================
+#
+# Group_Vars: VBSOL.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: rootoor
+
+Agt_Specify_Ver: 3.0.15
+
+ServerIP:       192.168.56.131
+ServerActiveIP: 192.168.56.131
+

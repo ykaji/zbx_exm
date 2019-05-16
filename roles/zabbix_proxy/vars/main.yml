@@ -1,0 +1,31 @@
+---
+#=================================================
+#
+# Role-Vars: zabbix_proxy/vars/main.yml
+#
+#=================================================
+
+Mysql_Root_Pwd: toor
+
+# Zabbix Proxy Short Name
+pkg_name: zabbix-proxy
+
+# Zabbix Proxy Install Target Package
+installPkg: zabbix-proxy-mysql-{{ Px_Specify_Ver }}
+
+# Zabbix Proxy Erase Package List
+removePkg: zabbix-proxy-mysql
+
+# DB Schema Setting Info
+sv_px: px
+zPxDbNm:  zabbix_proxy
+#SqlFlPth: "/usr/share/doc/zabbix-proxy-mysql-{{Px_Specify_Ver}}/"
+#SchmFl:   schema.sql
+dbPxUsr:  zabbix
+dbPxPwd:  zabbix
+
+# Zabbix Proxy Config Path
+Px_CnfPath: /etc/zabbix/zabbix_proxy.conf
+
+# Zabbix Server Database Schema File Decompress Temp Directroy
+schmDCmpDst: /tmp/

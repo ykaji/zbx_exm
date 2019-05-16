@@ -1,0 +1,81 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_agent/windows/tasks/main.yml
+#
+#=================================================
+
+- name: Get CPU Architecture
+  set_fact:
+    win_arch: "{{ansible_architecture[0:2]}}"
+
+- name: Create Temp Directory
+  win_file:
+    path:  "{{tempDir}}"
+    state: directory
+
+- name: Already Exist Check of Zip File
+  win_find:
+    paths:    "{{tempDir}}"
+    patterns: "{{zipFile}}"
+  register:
+    rslt_zipFileExist
+
+- name: Create Zabbix Agent Install Directory
+  win_file: 
+    path:  "{{installDir}}"
+    state: directory
+
+- name: Create Zabbix Agent Log Directory
+  win_file: 
+    path:  "{{logDir}}"
+    state: directory
+
+- name: Send Zip File for Temp Directory
+  win_copy: 
+    src:   "{{zipFile}}"
+    dest:  "{{tempDir}}"
+    state: file
+  when:
+    rslt_zipFileExist.matched == 0
+
+- name: Absent Service of Zabbix Agent  
+  win_service:
+    name:  "Zabbix Agent"
+    state: absent
+
+- name: Delete Firewall Rule of Zabbix Agent 
+  win_firewall_rule:
+    name:      "Zabbix Agent"
+    action:    allow
+    state:     absent
+    direction: in
+
+- name: UnZip Zabbix Agent Zip File
+  win_unzip:
+    src:             "{{tempDir}}{{zipFile}}"
+    dest:            "{{installDir}}"
+    delete_archive:  no 
+
+- name: Send Config File to Remote SV
+  win_copy:
+    src:   "files/conf/zabbix_agentd.win.conf_{{ansible_hostname}}" 
+    dest:  "{{installDir}}conf\\zabbix_agentd.win.conf"
+    force: yes
+
+- name: Create Zabbix Agent Service for Windows
+  win_service:
+    name:       "Zabbix Agent"
+    path:       "{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}} --config {{installDir}}conf\\{{confFile}}"
+    start_mode: auto
+    state:      started
+
+- name: Add Firewall Rule
+  win_firewall_rule:
+    name:      "Zabbix Agent"
+    program:   "{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}}"
+    direction: in
+    action:    allow
+    state:     present
+  ignore_errors: true
+

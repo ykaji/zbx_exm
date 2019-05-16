@@ -1,0 +1,97 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/main.yml
+#
+#=================================================
+
+#- debug: var=Sv_Specify_Ver
+
+#- debug: var=isSv
+
+#- name: test
+#  debug: msg="is Sv"
+#  when: isSv == true
+
+#- pause:
+#    minutes: 1
+
+- name: Set Valiable Specify_Ver from Sv_Specify_Ver
+  set_fact:
+    Specify_Ver: "{{ Sv_Specify_Ver }}"
+  when: isSv == true
+#  ignore_errors: true
+
+- name: Set Valiable Specify_Ver from Px_Specify_Ver
+  set_fact:
+    Specify_Ver: "{{ Px_Specify_Ver }}"
+  when:
+    isSv != true
+  ignore_errors: true
+
+- name: Set Valiable SchmaFile Path. Case of Server
+  set_fact:
+    SchmFlPth: "{{ SvSchmFlPth }}"
+  when:
+    isSv == true
+  ignore_errors: true
+
+- name: Set Valiable SchmaFile Name. Case of Server
+  set_fact:
+    SchmFlNm: "{{ SvSchmFlNm }}"
+  when:
+    isSv == true
+  ignore_errors: true
+
+- name: Set Valiable SchmaFile Path. Case of Proxy
+  set_fact:
+    SchmFlPth: "{{ PxSchmFlPth }}"
+  when:
+    isSv != true
+  ignore_errors: true
+
+- name: Set Valiable SchmaFile Name. Case of Proxy
+  set_fact:
+    SchmFlNm: "{{ PxSchmFlNm }}"
+  when:
+    isSv != true
+  ignore_errors: true
+
+
+#- debug: var=SchmFlPth
+
+#- pause:
+#    seconds: 20
+
+- name: Install MySQL-python
+  include_tasks: installMySQL-python.yml
+
+- name: Start Database Server
+  include_tasks: startDb.yml 
+
+- name: Already Exist Check for Database
+  include_tasks: alreadyExistDatabaseCheck.yml
+
+- debug: msg="'{{DBName}}' Database is Already Exist in MySQL"
+  when:
+    "DBName in rslt_extntSchm.stdout_lines"
+
+- name: Create Database
+  include_tasks: createDb.yml
+  when:
+    "DBName not in rslt_extntSchm.stdout_lines"
+
+#- name: Create Schema User              <-- not run. bug?
+#  include_tasks: createSchemaUser.yml
+
+
+- name: Schema Archive File Decompress
+  shell: gunzip -c "{{ SchmFlPth }}{{ SchmFlNm }}.gz" > {{ schmDCmpDst }}{{ SchmFlNm }}
+  when:
+    " DBName not in rslt_extntSchm.stdout_lines"
+
+- name: Schema Import
+  shell: "mysql -u{{ DBRootUsr }} -p{{ DBRootPwd }} {{ DBName }} < {{ schmDCmpDst }}{{ SchmFlNm }}"
+  when:
+    " DBName not in rslt_extntSchm.stdout_lines"
+

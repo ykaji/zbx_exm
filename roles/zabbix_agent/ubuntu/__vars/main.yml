@@ -1,0 +1,8 @@
+#=================================================
+#
+# role: zabbix_agent/ubuntu/vars/main.yml
+#
+#=================================================
+
+repo_Url: "{{zabbix_Base_Url}}/pool/main/z/zabbix"
+Agt_CnfPath: /etc/zabbix/zabbix_agent.conf

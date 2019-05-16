@@ -1,0 +1,21 @@
+---
+- name: Create Zabbix Agetn Service
+  hosts: VBWin2k8
+  gather_facts: true
+
+  tasks:
+    - set_fact:
+        win_arch: "{{ansible_architecture[0:2]}}"
+ 
+#    - debug: msg="{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}}"
+
+    - name: Create Service
+      win_service:
+        name:       "Zabbix Agent"
+        path:       "{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}} --config {{installDir}}conf\\{{confFile}}"
+        state:      started
+        start_mode: auto
+      when: ansible_system == "Win32NT"
+
+
+

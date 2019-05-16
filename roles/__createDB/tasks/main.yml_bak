@@ -1,0 +1,54 @@
+---
+#=================================================
+#
+# Role-Task: createDB/tasks/main.yml
+#
+#=================================================
+
+#- debug: var=sv_px
+
+- set_fact:
+    dbNm:     "{{ zSvDbNm }}"
+    sqlFlPth: "{{ zSvSqlFlPth }}"
+    schmFl:   "{{ zSvSchmFl }}"
+    dbUsr:    "{{ dbSvUsr }}"
+    dbPwd:    "{{ dbSvPwd }}"
+  when:
+    sv_px == 'sv'
+
+- set_fact:
+    dbNm:     "{{ zPxDbNm }}"
+    sqlFlPth: "{{ zPxSqlFlPth }}"
+    schmFl:   "{{ zPxSchmFl }}"
+    dbUsr:    "{{ dbPxUsr }}"
+    dbPwd:    "{{ dbPxPwd }}"
+  when:
+    sv_px == 'px'
+
+#- debug: var=dbNm
+#- debug: var=sqlFlPth
+#- debug: var=schmFl
+#- debug: var=dbUsr
+#- debug: var=dbPwd
+
+- name: Exist Check of Database
+  shell:
+    mysql -u{{ dbRtUsr }} -p{{ dbRtPwd }} -e "show databases"
+  register: 
+    rslt_extntSchm
+
+- name: Create Schema 
+  mysql_db:
+    name:           "{{ dbNm }}"
+    login_user:     "{{ dbRtUsr }}"
+    login_password: "{{ dbRtPwd }}"
+    encoding:       utf8
+  register: 
+    rslt_crtDB
+  notify:
+    - Create User of Database
+    - Schema Archive File Decompress
+    - Create Tables
+  when: 
+    "'{{ dbNm }}' not in rslt_extntSchm.stdout_lines" 
+

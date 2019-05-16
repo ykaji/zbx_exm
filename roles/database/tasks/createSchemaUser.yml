@@ -1,0 +1,31 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/createDb.yml
+#
+#=================================================
+
+- name: Create Schema User
+  mysql_user:
+    host:           "localhost"
+#    login_user:     "{{ DBRootUsr }}"
+#    login_password: "{{ DBRootPwd }}"
+    name:            "{{ DBUser }}"
+    password:        "{{ DBPassword }}"
+    append_privs:    "yes"
+    priv:            "{{ DBName }}.*:ALL,GRANT"
+    state:           "present"
+#    config_file:     /etc/my.cnf
+#  shell: mysql -u{{DBRootUsr}} -p{{DBRootPwd}} -e 'create user identified by "{{DBPassword}}"'
+#
+#- name: Append Grant for User
+#  shell: mysql -u{{DBRootUsr}} -p{{DBRootPwd}} -e "grant all privileges on {{DBName}}.* {{DBUser}}@localhost"
+
+
+
+
+##################################
+##
+##  Not Run!!!   Bug?
+##
+##################################

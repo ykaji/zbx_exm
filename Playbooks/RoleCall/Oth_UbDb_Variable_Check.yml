@@ -1,0 +1,8 @@
+---
+- name: Restart Zabbix Agent
+  hosts: OthZUbDbAgt
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

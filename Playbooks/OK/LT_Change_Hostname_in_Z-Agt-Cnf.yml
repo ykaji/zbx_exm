@@ -1,0 +1,17 @@
+---
+- name: Change Hostname in zabbix_agentd.conf
+  hosts: LTZCntAgt
+  gather_facts: true
+
+  vars:
+    CnfPath: /etc/zabbix/zabbix_agentd.conf
+
+  tasks:
+    - name: Change Hostname
+      replace:
+        dest:    "{{CnfPath}}"
+        regexp:  '^(Hostname=).*'
+        replace: '\1{{ansible_hostname}}'
+      register: zabbix_agent_result
+
+    - debug: var=zabbix_agent_result

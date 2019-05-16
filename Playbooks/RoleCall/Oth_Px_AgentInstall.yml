@@ -1,0 +1,8 @@
+---
+- name: Install Zabbix Agent for Proxy Server
+  hosts: OthZPx
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

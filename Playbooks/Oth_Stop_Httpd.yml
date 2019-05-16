@@ -1,0 +1,11 @@
+---
+- name: Stop httpd
+##  hosts: OthCnt701
+  gather_facts: false
+
+  tasks:
+    - name: Stopped Httpd Service
+      service: 
+        name: httpd
+        state: stopped
+

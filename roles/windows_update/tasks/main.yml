@@ -1,0 +1,23 @@
+---
+#=================================================
+#
+# Role-Task: windows_update/tasks/main.yml
+#
+#=================================================
+
+- win_updates:
+    category_names:
+      - Application
+      - CriticalUpdates
+      - DefinitionUpdates
+      - FeaturePacks
+      - SecurityUpdates
+      - ServicePacks
+      - UpdateRollups
+      - Updates
+    state:
+      installed
+    reboot:
+      yes
+    whitelist:
+      

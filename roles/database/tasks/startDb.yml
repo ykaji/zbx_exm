@@ -1,0 +1,27 @@
+
+#=================================================
+#
+# Role-Task: database/tasks/startDb.yml
+#
+#=================================================
+
+- name: Get DB Engine Name
+  shell: rpm -qa | egrep 'mariadb-server|mysql-server' | awk -F "-" '{ print $1 }'
+  register:
+    result
+
+- name: Set Database Engine Name to Variable
+  set_fact:
+    db_engine_nm: "{{ result.stdout }}"
+
+- name: Rename Database Engine Name to Variabl When MySQL
+  set_fact:
+    db_engine_nm: "mysqld"
+  when: db_engine_nm == "mysql"
+
+- name: Start Database Server
+  service:
+    name:    "{{ db_engine_nm }}"
+    state:   started
+    enabled: yes
+

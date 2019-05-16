@@ -1,0 +1,29 @@
+---
+#=================================================
+#
+# Group_Vars: VB30Sv.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: rootoor
+
+Agt_Specify_Ver: 3.0.20
+Sv_Specify_Ver:  3.0.20
+
+ServerIP:       127.0.0.1
+ServerActiveIP: 127.0.0.1
+
+# Server Config Setting Value
+DBRootUsr:             root
+DBRootPwd:             toor
+DBName:                zabbix
+DBUser:                zabbix
+DBPassword:            zabbix
+CacheSize:             256M
+HistoryCacheSize:      192M
+HistoryIndexCacheSize: 32M
+TrendCacheSize:        32M
+ValueCacheSize:        192M
+VMwareTimeout:         120
+
+isSv: true

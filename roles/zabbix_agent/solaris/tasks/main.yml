@@ -1,0 +1,73 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_agent/solaris/tasks/main.yml
+#
+#=================================================
+
+#- name: Get CPU Architecture
+#  set_fact:
+#    cpu_arch: "{{ ansible_architecture }}"
+
+- name: Get OS Major Version
+  set_fact:
+    os_ver: "{{ ansible_distribution_version[0:2] }}"
+
+
+- debug: msg="{{ os_ver }}"
+
+- name: Already Exist Check Zabbix Agent On Solaris
+  shell:
+    svcs -H zabbix-agent
+  register:
+    rslt_agtSvcExist
+  ignore_errors: true
+
+- debug: var=rslt_agtSvcExist
+
+- name: Already Exist Check of Pkg File
+  find:
+    paths:    "{{ pkgSpoolDir }}"
+    patterns: "{{ pkgFile }}"
+    file_type: file
+  register:
+    rslt_pkgFileExist
+
+- name: Send Pkg File to Temp Directory on Solaris
+  copy: 
+    src:   "{{ pkgFile }}"
+    dest:  "{{ pkgSpoolDir }}"
+  when:
+    rslt_pkgFileExist.matched == 0
+
+###############
+
+
+#- name: Stop Service
+#  svc:
+#    name:  "zabbix-Agent"
+#    state: stopped
+#  when:
+#    rslt_agntSvcExist.stdout != ""
+
+#- name: Un-Install Zabbix Agent for Windows
+#  win_shell:
+#    "{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}} -c {{installDir}}conf\\{{confFile}} -d"
+#  when:
+#   rslt_agntSvcExist.stdout != ""
+
+- debug: var=pkgFile
+
+- set_fact:
+    instCmd: "pkgadd -d {{tempDir}}{{pkgFile}} all"
+
+- name: Install Zabbix Agent for Solaris
+  shell:
+    #pkgadd  "{{ pkgFile }}"
+    "{{ instCmd }}"
+  notify:
+    - Start Service
+  when:
+    -  "'doesn\'t' in rslt_agtSvcExist.stdout"
+    # Old Version Installed
+

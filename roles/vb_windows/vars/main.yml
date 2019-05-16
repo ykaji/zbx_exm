@@ -1,0 +1,46 @@
+## Login Info ##
+ansible_ssh_user: Administrator
+ansible_ssh_pass: NTTCOM1qaz
+ansible_port: 5986
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+
+## Zabbix Agent ##
+Specify_Ver: 3.2.7
+
+## Folder Path ##
+SRC_Path: /root/zabbix_agent/
+
+## MSI ##
+Msi_SRC_Path: "{{SRC_Path}}msi/"
+Msi_File: ZABICOM_Agent.msi
+
+## Exe Files ##
+Bin_SRC_Path: "{{SRC_Path}}binary/"
+ZAgtd_File:  zabbix_agentd.exe
+ZGet_File:   zabbix_get.exe
+ZSndr_File:  zabbix_sender.exe
+
+## Config file ##
+ZAgtCnf_File: "zabbix_agentd.win.conf"
+
+## Zip File ##
+ZAgt_Zip_File: "zabbix_agents_{{Specify_Ver}}.win.zip"
+
+## Zabbix Agent Install Path ##
+ZAgt_Base_Path: C:\zabbix\
+ZAgtCnf_Path: "{{ZAgt_Base_Path}}conf\\"
+ZAgtLog_Path: "{{ZAgt_Base_Path}}log\\"
+ZAgtBin32_Path: "{{ZAgt_Base_Path}}bin\\win32\\"
+ZAgtBin64_Path: "{{ZAgt_Base_Path}}bin\\win64\\"
+
+## 64bit Source ##
+B-SRC_ZAgtd_64: "{{Bin_SRC_Path}}win64/{{ZAgtd_File}}"
+B-SRC_ZGet_64:  "{{Bin_SRC_Path}}win64/{{ZGet_File}}"
+B-SRC_ZSndr_64: "{{Bin_SRC_Path}}win64/{{ZSndr_File}}"
+
+## 32bit Source ##
+B_SRC_ZAgtd_32: "{{Bin_SRC_Path}}win32/{{ZAgtd_File}}"
+B_SRC_ZGet_32:  "{{Bin_SRC_Path}}win64/{{ZGet_File}}"
+B_SRC_ZSndr_32: "{{Bin_SRC_Path}}win64/{{ZSndr_File}}"
+

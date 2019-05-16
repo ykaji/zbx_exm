@@ -1,0 +1,22 @@
+---
+- name: zabbix-agent Auto-Start
+  hosts: ubudebi
+  gather_facts: true
+
+  tasks:
+# CentOS7.x Ubuntu Debian ##
+    - name: Zabbix Agent Daemon Auto-Start Setting for Linux OS
+      systemd:
+        name:    zabbix-agent
+        enabled: yes
+      when: ansible_system == "Linux"
+      #   (ansible_distribution == "CentOS" and ansible_distribution_major_version == "7") or
+      #   (ansible_distribution == "Debian") or
+      #   (ansible_distribution == "Ubuntu")
+        
+
+    - name: Zabbix Agent Daemon Auto-Start Setting for Windows OS
+      win_service:
+        name:       "Zabbix Agent"
+        start_mode: auto
+      when: ansible_system == "Win32NT"

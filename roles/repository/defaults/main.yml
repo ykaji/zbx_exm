@@ -1,0 +1,9 @@
+#=================================================
+#
+# role:  repository/defaults/main.yml
+#
+#=================================================
+
+repoBrnchNum: 1
+
+zabbix_Base_Url: "http://repo.zabbix.com/zabbix/{{spcfyMjVer}}/{{low_distribution}}"

@@ -1,0 +1,37 @@
+---
+- name: table exist check
+  hosts: 192.168.56.32
+
+  tasks:
+  - name: command send for zabbix_sample
+    shell:
+       mysql -uroot -e"show tables from zabbix_sample"
+    register: result
+
+  - name: show result
+    debug: var=result
+   
+  - name: find string 
+    command: echo "find###"
+    register: message1
+    when: "'Tables_in_zabbix_sample' not in result.stdout"
+
+  - name: show result
+    debug: var=message1
+
+  - name: command send for test
+    shell:
+      mysql -uroot -e"show tables from test"
+    register: result
+
+  - name: show result
+    debug: var=result
+
+  - name: find string 
+    command: echo "find$$$"
+    register: message2
+    when: "'Tables_in_zabbix_sample' not in result.stdout"
+
+  - name: show result
+    debug: var=message2
+

@@ -1,0 +1,17 @@
+---
+#=================================================
+#
+# Role-Handler: createDB/handlers/main.yml
+#
+#=================================================
+
+- name: Create User of Database
+  mysql_user:
+    host:           localhost
+    login_user:     "{{ DBRootUsr }}"
+    login_password: "{{ DBRootPwd }}"
+    name:           "{{ DBName }}"
+    password:       "{{ DBPassword }}"
+    append_privs:   yes
+    priv:           "{{ DBName }}.*:ALL,GRANT"
+

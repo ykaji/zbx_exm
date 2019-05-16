@@ -1,0 +1,11 @@
+---
+- name: Wait for Input by "start" or "restart"
+  hosts: all
+
+  vars_prompt:
+    - name: action_mode
+      prompt: "Enter 'start' or 'restart' (Default:start)"
+      default: start
+      private: no
+
+

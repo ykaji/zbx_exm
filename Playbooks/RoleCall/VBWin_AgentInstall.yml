@@ -1,0 +1,8 @@
+---
+- name: Install Zabbix Agent for Windows
+  hosts: VBWin2k8
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

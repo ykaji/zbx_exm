@@ -1,0 +1,12 @@
+---
+#=================================================
+#
+# Role-Task: httpd/tasks/startHttpd.yml
+#
+#=================================================
+
+- name: Restart httpd
+  service:
+    name:    httpd
+    state:   restarted
+

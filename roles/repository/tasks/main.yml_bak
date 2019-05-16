@@ -1,0 +1,22 @@
+---
+#=================================================
+#
+# role: repository/tasks/main.yml
+#
+#=================================================
+
+# Case of Ubuntu include role ubuntu
+- include_role:
+    name: repository/ubuntu
+  when: ansible_distribution == "Ubuntu"
+
+# Case of Debian include role debian
+- include_role:
+    name: repository/debian
+  when: ansible_distribution == "Debian"
+
+# Case of CentOS include role centos
+- include_role:
+    name: repository/centos
+  when: ansible_distribution == "CentOS"
+

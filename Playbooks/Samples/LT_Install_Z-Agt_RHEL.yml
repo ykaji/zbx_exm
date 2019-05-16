@@ -1,0 +1,11 @@
+- name: Install Zabbix Agent Package
+  hosts: LTZabbixRHELAgents
+  gather_facts: false
+#  remote_user: root
+#  sudo: yes
+
+  tasks:
+  - name: Zabbix Agent Install 
+    yum: 
+      name: zabbix-agent
+      state: latest

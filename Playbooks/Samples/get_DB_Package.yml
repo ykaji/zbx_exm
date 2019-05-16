@@ -1,0 +1,11 @@
+---
+- name:         Get DB Engine Name 
+  hosts:        BZSV
+  gather_facts: true
+
+  tasks:
+  - shell: rpm -qa |egrep 'mariadb-server|mysql-server' | awk -F "-" '{ print $1"-"$2 } '
+    register:
+      db_engine_nm
+
+  - debug: var=db_engine_nm

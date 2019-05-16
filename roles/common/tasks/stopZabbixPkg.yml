@@ -1,0 +1,14 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_server/tasks/stopZabbixPkg.yml
+#
+#=================================================
+
+- name: Stop "{{ pkg_name }}"
+  service:
+    name:  "{{ pkg_name}}"
+    state: stopped
+    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+  ignore_errors: true
+

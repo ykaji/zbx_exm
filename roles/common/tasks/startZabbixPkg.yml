@@ -1,0 +1,18 @@
+---
+#=================================================
+#
+# Role-Task: common/tasks/restartZabbixPkg.yml
+#
+#=================================================
+
+- name: Restart "{{ pkg_name }}"
+  service:
+    name:    "{{ pkg_name }}"
+    state:   restarted
+#    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+
+- name: start "{{ pkg_name }}"
+  service:
+    name:    "{{ pkg_name }}"
+    state:   started
+    enabled: yes

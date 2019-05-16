@@ -1,0 +1,61 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_server/tasks/main.yml
+#
+#=================================================
+
+- name: Set Specified Version to Variable
+  set_fact:
+    specify_Ver: "{{ Sv_Specify_Ver }}"
+
+- import_role: 
+    name: common
+
+#- name: Compare the Current Ver with the Specified Ver
+#  include_role:
+#    name:       common
+#    tasks_from: compareVer.yml
+
+#- name: If Case Current Ver is New, Stop the Zabbix Server
+- name: Stop the Zabbix Server
+  include_role: 
+    name:       common
+    tasks_from: stopZabbixPkg.yml
+#  when:
+#    crntIs == "New"
+
+#- name: If Case Current Ver is New, Remove the Zabbix Server
+- name: Remove the Zabbix Server
+  include_role: 
+    name:       common
+    tasks_from: removeZabbixPkg.yml
+#  when:
+#    crntIs == "New"
+
+- name: Erase Current Repository and Specifyed Repository install
+  include_role:
+    name: repository
+
+#- name: Set Install Packages Name to Variable
+#  set_fact:
+#    installPkg: "{{ zabbix_server_packages }}"
+
+- name: Install Zabbix Server Packages
+  include_role:
+    name:       common
+    tasks_from: installZabbixPkg.yml
+
+- name: Change Zabbix Server Config File
+  include_tasks: changeZSvConf.yml
+
+- name: Start Zabbix Server
+  include_role:
+    name:       common
+    tasks_from: startZabbixPkg.yml
+
+- name: Restart Httpd
+  include_role:
+    name:       httpd
+    tasks_from: restartHttpd.yml
+

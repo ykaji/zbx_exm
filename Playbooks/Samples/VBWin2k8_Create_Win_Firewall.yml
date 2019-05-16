@@ -1,0 +1,24 @@
+---
+- name: Create Windows Firewall rule for Windows OS
+  hosts: VBWin2k8
+  gather_facts: true
+
+  tasks:
+    - set_fact:
+        win_arch: "{{ansible_architecture[0:2]}}"
+ 
+    - debug: msg="{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}}"
+
+    - name: add Firewall rule
+      win_firewall_rule:
+        name:      "Zabbix Agent"
+#        program:   "C:\\zabbix\\bin\\win{{win_arch}}\\{{agtdExe}}"
+        program:   "{{installDir}}bin\\win{{win_arch}}\\{{agtdExe}}"
+#        program:   C:\zabbix\bin\win64\zabbix_agentd.exe
+        direction: in
+        action:    allow
+        state:     present
+      when: ansible_system == "Win32NT"
+
+
+

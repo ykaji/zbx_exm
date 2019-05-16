@@ -1,0 +1,14 @@
+---
+- name: Reboot Zabbix Members
+  hosts: OthZWinAgt
+  gather_facts: true
+
+  tasks:
+    - name: Reboot Linux OS
+      command: reboot
+      when: ansible_system == "Linux"
+
+    - name: Reboot Windows OS
+      win_reboot:
+        reboot_timeout_sec: 60
+      when: ansible_system == "Win32NT"

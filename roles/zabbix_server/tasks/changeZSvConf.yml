@@ -1,0 +1,79 @@
+---
+#=================================================
+#
+# Role-Task: zabbix_server/tasks/changeZSvConf.yml
+#
+#=================================================
+
+- name: Change DBName
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^(DBName).*'
+    replace: '\1={{DBName}}'
+    backup:   yes
+
+- name: Change DBUser
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^(DBUser).*'
+    replace: '\1={{DBUser}}'
+    backup:   no
+
+- name: Change DBPassword
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (DBPassword).*'
+    replace: '\1={{DBPassword}}'
+    backup:   no
+
+- name: Change CacheSize
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (CacheSize).*'
+    replace: '\1={{CacheSize}}'
+    backup:   no
+
+- name: Change HistoryCacheSize
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (HistoryCacheSize).*'
+    replace: '\1={{HistoryCacheSize}}'
+    backup:   no
+
+- name: Change HistoryIndexCacheSize
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (HistoryIndexCacheSize).*'
+    replace: '\1={{HistoryIndexCacheSize}}'
+    backup:   no
+
+- name: Change TrendCacheSize
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (TrendCacheSize).*'
+    replace: '\1={{TrendCacheSize}}'
+    backup:   no
+
+- name: Change ValueCacheSize
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (ValueCacheSize).*'
+    replace: '\1={{ValueCacheSize}}'
+    backup:   no
+
+- name: Change VMwareTimeout
+  replace:
+    dest:    "{{Sv_CnfPath}}"
+    regexp:  '^# (VMwareTimeout).*'
+    replace: '\1={{VMwareTimeout}}'
+    backup:   no
+
+#- name: Schema Archive File Decompress
+#  shell: gunzip -c "{{ zSvSqlFlPth }}{{ zSvSchmFl }}.gz" > {{ schmDCmpDst }}{{ zSvSchmFl }}
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"
+
+#- name: Schema Import
+#  shell: "mysql -u{{ DBUser }} -p{{ DBPassword }} {{ DBName }} < {{ schmDCmpDst }}{{ zSvSchmFl }}"
+#  when:
+#    " DBName not in rslt_extntSchm.stdout_lines"

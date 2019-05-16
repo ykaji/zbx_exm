@@ -1,0 +1,11 @@
+- debug: var=parent_var
+
+- debug:
+    msg: "== Switch to Child =="
+
+- include_role:
+    name:      parent/child
+    vars_from: main.yml
+    
+- debug:
+    msg: "== End to File of Parent =="

@@ -1,0 +1,11 @@
+---
+- name: ping
+  hosts: all
+  gather_facts: false
+  become: true
+
+  handlers:
+  tasks:
+  - name: pinging for linux servers
+    ping:
+

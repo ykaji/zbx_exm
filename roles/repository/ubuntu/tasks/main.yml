@@ -1,0 +1,16 @@
+#=================================================
+#
+# Role-Task: repository/ubuntu/tasks/main.yml
+#
+#=================================================
+
+- name: Purge zabbix-release for Ubuntu
+  shell: dpkg -P zabbix-release
+
+- name: "Download Zabbix {{spcfyMjVer}} Repository for {{ansible_distribution}}"
+  shell: "cd /tmp; wget {{ zabbix_Base_Url }}/pool/main/z/zabbix-release/zabbix-release_{{spcfyMjVer}}-{{repoBrnchNum}}+{{ansible_distribution_release}}_all.deb"
+
+- name: "Install Zabbix {{spcfyMjVer}} Repository for {{ansible_distribution}}"
+  include_role:
+    name:       repository
+    tasks_from: installRepository.yml

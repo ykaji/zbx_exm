@@ -1,0 +1,17 @@
+---
+- name: Delete Zabbix Agetn Service
+  hosts: VBWin2k8
+  gather_facts: true
+
+  tasks:
+    - set_fact:
+        win_arch: "{{ansible_architecture[0:2]}}"
+ 
+    - name: Create Service
+      win_service:
+        name:       "Zabbix Agent"
+        state:      absent
+      when: ansible_system == "Win32NT"
+
+
+

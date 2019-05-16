@@ -1,0 +1,11 @@
+---
+- name: Create Zabbix Enviroment for Zabbix Proxy
+  hosts: OthZPx
+  gather_facts: true
+
+  roles:
+    - zabbix_proxy
+    - database
+    - zabbix_agent
+
+

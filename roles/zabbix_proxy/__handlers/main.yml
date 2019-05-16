@@ -1,0 +1,97 @@
+---
+#==============================
+#
+# Role-Handler:  zabbix_proxy/handler/main.yml
+#
+#==============================
+
+- name: Change Server IP
+  replace:
+    path:    '{{Px_CnfPath}}'
+    regexp:  '^(Server)=.*'
+    replace: '\1={{ ServerIP }}'
+    backup:   yes
+
+- name: Change ServerActive IP
+  replace:
+    path:    '{{Px_CnfPath}}'
+    regexp:  '^(ServerActive)=.*'
+    replace: '\1={{ ServerActiveIP }}'
+    backup:   no
+
+- name: Change Hostname
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(Hostname).*'
+    replace: '\1={{ansible_hostname}}'
+    backup:   no
+
+- name: Change DBName
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(DBName).*'
+    replace: '\1={{DBName}}'
+    backup:   no
+
+- name: Change DBUser
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(DBUser).*'
+    replace: '\1={{DBUser}}'
+    backup:   no
+
+- name: Change DBPassword
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (DBPassword).*'
+    replace: '\1={{DBPassword}}'
+    backup:   no
+
+- name: Change ProxyLocalBuffer
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ProxyLocalBuffer).*'
+    replace: '\1={{ProxyLocalBuffer}}'
+    backup:   no
+
+- name: Change ProxyOfflineBuffer
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ProxyOfflineBuffer).*'
+    replace: '\1={{ProxyOfflineBuffer}}'
+    backup:   no
+
+- name: Change ConfigFrequency
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^# (ConfigFrequency).*'
+    replace: '\1={{ConfigFrequency}}'
+    backup:   no
+
+- name: Change Timeout
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(Timeout).*'
+    replace: '\1={{Timeout}}'
+    backup:   no
+
+- name: Change Start Mode
+  service:
+    name:    zabbix-proxy
+    enabled: yes
+    use:     "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+  when:
+    - ansible_distribution == "CentOS"
+
+- name: Re-Start Service
+  service:
+    name:  zabbix-proxy
+    state: restarted
+    use:   "{{ (ansible_service_mgr == 'upstart') | ternary('service', 'systemd') }}"
+
+- name: Schema Archive File Decompress
+  shell: gunzip -c "{{ zPxSqlFlPth }}{{ zPxSchmFl }}.gz" > {{ schmDCmpDst }}{{ zPxSchmFl }}
+
+- name: Schema Import
+  shell: "mysql -u{{ DBUser }} -p{{ DBPassword }} {{ DBName }} < {{ schmDCmpDst }}{{ zPxSchmFl }}"
+

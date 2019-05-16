@@ -1,0 +1,11 @@
+#=================================================
+#
+# Role-Vars: database/vars/main.yml
+#
+#=================================================
+
+SvSchmFlPth:  "/usr/share/doc/zabbix-server-mysql-{{Specify_Ver}}/"
+SvSchmFlNm:   "create.sql"
+PxSchmFlPth:  "/usr/share/doc/zabbix-proxy-mysql-{{Specify_Ver}}/"
+PxSchmFlNm:   "schema.sql"
+schmDCmpDst:  /tmp/

@@ -1,0 +1,10 @@
+---
+- name: Call parent child test
+  hosts: VB30Sv
+  gather_facts: true
+
+  tasks:
+    - import_role:
+        name: parent
+
+

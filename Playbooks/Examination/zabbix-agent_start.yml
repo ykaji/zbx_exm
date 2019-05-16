@@ -1,0 +1,23 @@
+- name: Zabbix Agent Services Auto Start
+#  hosts: Zabbix Agents
+  hosts: all
+  gather_facts: false
+#  remote_user: root
+#  sudo: yes
+#  become: true
+
+  handlers:
+  - name: restart zabbix-agent
+    service: 
+      name: zabbix-agent
+      state: restarted
+
+  tasks:
+  - name: Check for Service Status of Zabbix Agent
+    service: 
+      name: zabbix-agent
+      state: started
+      enabled: yes
+    notify:
+    - restart zabbix-agent
+
