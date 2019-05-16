@@ -4,7 +4,7 @@
   gather_facts: false
 
   tasks:
-    - name: Shutdown Linux Servers wait 60sec
+    - name: Shutdown Linux Servers quit
       command: shutdown -h now
       when: ansible_system == "Linux"
 
