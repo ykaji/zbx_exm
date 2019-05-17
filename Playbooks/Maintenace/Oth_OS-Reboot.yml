@@ -1,6 +1,6 @@
 ---
 - name: Reboot Zabbix Members
-  hosts: OthZWinAgt
+  hosts: OthZAlMbrGrp
   gather_facts: true
 
   tasks:
