@@ -1,0 +1,103 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+
+## [webservers]
+## alpha.example.org
+## beta.example.org
+## 192.168.1.100
+## 192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+## www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+## [dbservers]
+## 
+## db01.intranet.mydomain.net
+## db02.intranet.mydomain.net
+## 10.25.1.56
+## 10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+## db-[99:101]-node.example.com
+
+
+##ansible_tower ansible_host=192.168.56.60
+
+[LTZSv]
+#10.2.21.11
+LTSV01
+
+[LTZPx]
+#10.2.21.[21:24]
+LTPX01NN
+LTPX02NE
+LTPX03EN
+LTPX04EE
+
+# Zabbix Agents
+[LTZCnt6Agt]
+#10.2.21.[31:50]
+LTCnt6[01:20]
+
+[LTZCnt7Agt]
+#10.2.21.[51:110]
+LTCnt7[01:60]
+
+[LTZDbAgt]
+#10.2.21.[111:114]
+LTDb0[1:4]
+
+[LTZUbAgt]
+#10.2.21.[115:118]
+LTUb0[1:4]
+
+[LTZWinAgt]
+#10.2.21.[119:124]
+LTW2k080[1:2]
+LTW2k120[1:2]
+LTW2k160[1:2]
+
+[LTZCntAgt:children]
+LTZCnt6Agt
+LTZCnt7Agt
+
+
+[LTZAlAgt:children]
+LTZWinAgt
+LTZCnt6Agt
+LTZCnt7Agt
+LTZUbAgt
+LTZDbAgt
+LTZPx
+LTZSv
+
+[LTZLxAgt:children]
+LTZCnt6Agt
+LTZCnt7Agt
+LTZUbAgt
+LTZDbAgt
+LTZPx
+LTZSv
+

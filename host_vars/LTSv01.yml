@@ -1,0 +1,26 @@
+---
+#=================================================
+#
+# Group_Vars: LTZSv.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+Agt_Specify_Ver: 3.0.17
+Sv_Specify_Ver:  3.0.17
+
+# Server Config Setting Value
+DBRootUsr:   root
+DBRootPwd:   toor
+DBName:                zabbix
+DBUser:                zabbix
+DBPassword:            zabbix
+CacheSize:             256M
+HistoryCacheSize:      192M
+HistoryIndexCacheSize: 32M
+TrendCacheSize:        32M
+ValueCacheSize:        192M
+VMwareTimeout:         120
+
+isSv: true

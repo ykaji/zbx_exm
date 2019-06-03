@@ -1,0 +1,23 @@
+---
+#=================================================
+#
+# Group_Vars: LTBLDSVENC.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+Agt_Specify_Ver: 3.0.17
+
+# Zabbix Agent Config Parameter
+ServerIP:             10.6.21.11
+ServerActiveIP:       10.6.21.11
+HostMetadataItem:     system.sw.os
+AllowRoot:            1
+EnableRemoteCommands: 1
+TLSConnect:           psk
+TLSAccept:            unencrypted,psk
+TLSPSKIdentity:       "{{ ansible_hostname }}PSK"
+TLSPSKFile:           "/etc/zabbix/{{ ansible_hostname | lower }}.psk"
+
+isSv: False

@@ -1,91 +1,103 @@
-# This is the default ansible 'hosts' file.
-#
-# It should live in /etc/ansible/hosts
-#
-#   - Comments begin with the '#' character
-#   - Blank lines are ignored
-#   - Groups of hosts are delimited by [header] elements
-#   - You can enter hostnames or ip addresses
-#   - A hostname/ip can be a member of multiple groups
+### When Maintenance Use Inventory Section ###
+[LTMNTSV]
+LTSv01
 
-# Ex 1: Ungrouped hosts, specify before any group headers.
+[LTMNTPX]
+LTPx01NN
+LTPx02NE
+LTPx03EN
+LTPx04EE
 
-## green.example.com
-## blue.example.com
-## 192.168.100.1
-## 192.168.100.10
+[LTMNTCNT6]
+LTCnt6[01:20]
 
-# Ex 2: A collection of hosts belonging to the 'webservers' group
+[LTMNTCNT7]
+LTCnt7[01:60]
 
-## [webservers]
-## alpha.example.org
-## beta.example.org
-## 192.168.1.100
-## 192.168.1.110
+[LTMNTDB]
+LTDb0[1:4]
 
-# If you have multiple hosts following a pattern you can specify
-# them like this:
+[LTMNTUB]
+LTUb0[1:4]
 
-## www[001:006].example.com
+[LTMNTWIN]
+LTW2k080[1:2]
+LTW2k120[1:2]
+LTW2k160[1:2]
 
-# Ex 3: A collection of database servers in the 'dbservers' group
+[LTMNTCNT:children]
+LTMNTCNT6
+LTMNTCNT7
 
-## [dbservers]
-## 
-## db01.intranet.mydomain.net
-## db02.intranet.mydomain.net
-## 10.25.1.56
-## 10.25.1.57
+[LTMNTLINUX:children]
+LTMNTCNT
+LTMNTUB
+LTMNTDB
+LTMNTPX
+LTMNTSV
 
-# Here's another example of host ranges, this time there are no
-# leading 0s:
+[LTMNTALL:children]
+LTMNTWIN
+LTMNTLINUX
 
-## db-[99:101]-node.example.com
+### When Server Build Inventory Section ###
+[LTBLDSV]
+LTCnt6[01:02]
+LTCnt7[01:02]
+LTSv01
 
+[LTBLDSVWIN]
+LTW2k0801
+LTW2k1201
+LTW2k1601
 
-##ansible_tower ansible_host=192.168.56.60
+[LTBLDSV:children]
+LTBLDSVWIN
 
-[LTZSv]
-10.2.21.11
+[LTBLDSVENC]
+LTCnt6[03:04]
+LTCnt7[03:04]
 
-[LTZPx]
-10.2.21.[21:24]
+[LTBLDPX01]
+LTCnt6[05:08]
+LTCnt7[05:18]
+LTDb01
+LTUb01
+LTPx01NN
 
-# Zabbix Agents
-[LTZCnt6Agt]
-10.2.21.[31:50]
+[LTBLDPX01WIN]
+LTW2k0802
+LTW2k1202
+LTW2k1602
 
-[LTZCnt7Agt]
-10.2.21.[51:110]
+[LTBLDPX01:children]
+LTBLDPX01WIN
 
-[LTZDbAgt]
-10.2.21.[111:114]
+[LTBLDPX02ENC]
+LTCnt6[09:12]
+LTCnt7[19:32]
+LTDb02
+LTUb02
+LTPx02NE
 
-[LTZUbAgt]
-10.2.21.[115:118]
+[LTBLDPX03]
+LTCnt6[13:16]
+LTCnt7[33:46]
+LTDb03
+LTUb03
+LTPx03EN
 
-[LTZWinAgt]
-10.2.21.[119:124]
+[LTBLDPX04ENC]
+LTCnt6[17:20]
+LTCnt7[47:60]
+LTDb04
+LTUb04
+LTPx04EE
 
-[LTZCntAgt:children]
-LTZCnt6Agt
-LTZCnt7Agt
-
-
-[LTZAlAgt:children]
-LTZWinAgt
-LTZCnt6Agt
-LTZCnt7Agt
-LTZUbAgt
-LTZDbAgt
-LTZPx
-LTZSv
-
-[LTZLxAgt:children]
-LTZCnt6Agt
-LTZCnt7Agt
-LTZUbAgt
-LTZDbAgt
-LTZPx
-LTZSv
-
+[LTBLDALL:children]
+LTBLDSV
+LTBLDSVENC
+LTBLDPX01
+LTBLDPX02ENC
+LTBLDPX03
+LTBLDPX04ENC

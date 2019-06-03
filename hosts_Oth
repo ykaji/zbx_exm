@@ -1,49 +1,3 @@
-# This is the default ansible 'hosts' file.
-#
-# It should live in /etc/ansible/hosts
-#
-#   - Comments begin with the '#' character
-#   - Blank lines are ignored
-#   - Groups of hosts are delimited by [header] elements
-#   - You can enter hostnames or ip addresses
-#   - A hostname/ip can be a member of multiple groups
-
-# Ex 1: Ungrouped hosts, specify before any group headers.
-
-## green.example.com
-## blue.example.com
-## 192.168.100.1
-## 192.168.100.10
-
-# Ex 2: A collection of hosts belonging to the 'webservers' group
-
-## [webservers]
-## alpha.example.org
-## beta.example.org
-## 192.168.1.100
-## 192.168.1.110
-
-# If you have multiple hosts following a pattern you can specify
-# them like this:
-
-## www[001:006].example.com
-
-# Ex 3: A collection of database servers in the 'dbservers' group
-
-## [dbservers]
-## 
-## db01.intranet.mydomain.net
-## db02.intranet.mydomain.net
-## 10.25.1.56
-## 10.25.1.57
-
-# Here's another example of host ranges, this time there are no
-# leading 0s:
-
-## db-[99:101]-node.example.com
-
-##ansible_tower ansible_host=192.168.56.60
-
 OthSv01
 OthSV99
 OthPx01
@@ -55,47 +9,47 @@ OthW2k080[1:4]
 OthW2k120[1:4]
 OthW2k160[1:4]
 
-[OthZSvMbr]
+[OTHSV]
 OthSv01
 
-[OthZPxMbr]
+[OTHPX]
 OthPx01
 
-[OthZPx01Mbr]
+[OTHPX01]
 OthCnt601
 OthCnt701
 OthDb01
 OthUb01
 
-[OthZCnt6AgtMbr]
+[OTHCNT6]
 OthCnt60[2:4]
 
-[OthZCnt7AgtMbr]
+[OTHCNT7]
 OthCnt70[2:4]
 
-[OthZDbAgtMbr]
+[OTHDB]
 OthDb0[2:4]
 
-[OthZUbAgtMbr]
+[OTHUB]
 OthUb0[2:4]
 
-[OthZWinAgtMbr]
+[OTHWIN]
 OthW2k080[1:4]
 OthW2k120[1:4]
 OthW2k160[1:4]
 
-[OthZCntAgtGrp:children]
-OthZCnt6AgtMbr
-OthZCnt7AgtMbr
+[OTHCNT:children]
+OTHCNT6
+OTHCNT7
 
-[OthZUbDbAgtGrp:children]
-OthZDbAgtMbr
-OthZUbAgtMbr
+[OTHUBDB:children]
+OTHDB
+OTHUB
 
-[OthZAlMbrGrp:children]
-OthZSvMbr
-OthZPxMbr
-OthZPx01Mbr
-OthZCntAgtGrp
-OthZUbDbAgtGrp
-OthZWinAgtMbr
+[OTHALL:children]
+OTHSV
+OTHPX
+OTHPX01
+OTHCNT
+OTHUBDB
+OTHWIN
