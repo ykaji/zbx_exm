@@ -1,6 +1,6 @@
 ---
 - name: Ping for Server of Oth Env
-  hosts: OthZAlMbrGrp 
+  #hosts: OthZAlMbrGrp 
   gather_facts: true
 
   handlers:
