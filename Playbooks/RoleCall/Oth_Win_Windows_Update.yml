@@ -1,6 +1,6 @@
 ---
 - name: Windows Update for Windows node
-  hosts: OthZWinAgt
+  hosts: OTHWIN
   gather_facts: false
 
   roles:

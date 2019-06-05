@@ -1,8 +1,0 @@
----
-- name: Install Zabbix Proxy for Proxy Server
-  hosts: OthZPx
-  gather_facts: true
-
-  roles:
-    - zabbix_proxy
-
