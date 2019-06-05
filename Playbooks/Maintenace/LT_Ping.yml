@@ -3,7 +3,7 @@
   hosts:
   gather_facts: true
 
-  handlers:
+  #handlers:
   tasks:
   - name: Pinging for Linux Servers
     ping:
