@@ -1,0 +1,8 @@
+---
+- name: Install Zabbix Agent for Proxy01 Members on Longtime Exam
+  hosts: LTBLDPX01
+  gather_facts: true
+
+  roles:
+    - zabbix_agent
+

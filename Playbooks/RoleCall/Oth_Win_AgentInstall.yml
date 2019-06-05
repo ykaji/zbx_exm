@@ -1,6 +1,6 @@
 ---
 - name: Install Zabbix Agent for Windows
-  hosts: OthZ03WinAgt
+  hosts: OTHWIN
   gather_facts: true
 
   roles:

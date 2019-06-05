@@ -1,6 +1,6 @@
 ---
 - name: Stop Zabbix Systems with DB
-  hosts: OthZabbixServer
+  hosts: OTHSV
   ##hosts: OthZabbixProxy
   ##hosts: OthZabbixMembers
   gather_facts: false

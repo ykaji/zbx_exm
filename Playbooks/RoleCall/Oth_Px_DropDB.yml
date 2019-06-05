@@ -1,6 +1,6 @@
 ---
 - name: Drop Database on Zabbix Server
-  hosts: OthZPx
+  hosts: OTHPX
   gather_facts: true
 
   tasks:

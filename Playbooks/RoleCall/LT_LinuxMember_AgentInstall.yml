@@ -1,8 +1,0 @@
----
-- name: Install Zabbix Agent for Linux on Longtime Exam
-  hosts: LTZLxAgt
-  gather_facts: true
-
-  roles:
-    - zabbix_agent
-

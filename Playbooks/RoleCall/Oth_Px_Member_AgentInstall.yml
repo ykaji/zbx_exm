@@ -1,6 +1,6 @@
 ---
 - name: Install Zabbix Agent for Linux and Windows on Other Exam
-  hosts: OthZPx01Mbr
+  hosts: OTHPX01
   gather_facts: true
 
   roles:

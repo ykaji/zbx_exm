@@ -1,9 +1,7 @@
 ---
 - name: Change Hostname
-  hosts: OthZabbixMembers
+  hosts: OTHALL
   gather_facts: true
-#  remote_user: root
-#  sudo: yes
 
   tasks:
     - name: Install libselinux_python for CentOS 6.x

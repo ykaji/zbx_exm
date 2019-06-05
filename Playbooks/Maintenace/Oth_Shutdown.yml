@@ -1,6 +1,6 @@
 ---
 - name: Shutdown Server of Zabbix Member
-  hosts: OthZAlMbrGrp
+  hosts: OTHALL
   gather_facts: true
 
   tasks:

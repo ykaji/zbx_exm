@@ -1,6 +1,6 @@
 ---
 - name: Reboot Zabbix Members
-  hosts: LTZAlAgt
+  hosts: OTHALL
   gather_facts: true
 
   tasks:
