@@ -1,9 +1,0 @@
----
-- name: Install Zabbix Server and Agent for Zabbix Server 
-  hosts: LTZSv
-  gather_facts: true
-
-  roles:
- #   - zabbix_server
-    - zabbix_agent
-

@@ -1,8 +1,0 @@
----
-- name: Install Zabbix Agent for Linux on Other Exam
-  hosts: OthZ03LxAgt
-  gather_facts: true
-
-  roles:
-    - zabbix_agent
-

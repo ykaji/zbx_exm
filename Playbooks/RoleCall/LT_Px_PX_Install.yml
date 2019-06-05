@@ -1,9 +1,0 @@
----
-- name: Zabbix Proxy Install for Zabbix Proxy
-  hosts: LTZPx
-  gather_facts: true
-
-  roles:
-    - zabbix_proxy
-
-
