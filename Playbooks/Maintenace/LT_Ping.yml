@@ -1,6 +1,6 @@
 ---
 - name: Ping for Server of LT Env
-  hosts: LTMNTALL
+  hosts:
   gather_facts: true
 
   handlers:
