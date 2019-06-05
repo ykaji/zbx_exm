@@ -1,16 +1,13 @@
 ---
 - name: Ping for Server of Oth Env
-  #hosts: OthZAlMbrGrp 
+  hosts: OTHALL
   gather_facts: true
 
-  handlers:
   tasks:
   - name: Pinging for Linux Servers
     ping:
     when: ansible_system == 'Linux'
 
-  handlers:
-  tasks:
   - name: Pinging for Windows Servers
     win_ping:
     when: ansible_system == 'Wini32NT'
