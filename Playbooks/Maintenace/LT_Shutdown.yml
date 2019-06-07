@@ -1,6 +1,6 @@
 ---
 - name: Shutdown Server of Zabbix Member
-  hosts: LTMNTALL
+  hosts: LTALL
   gather_facts: true
 
   tasks:

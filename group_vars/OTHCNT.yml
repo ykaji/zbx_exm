@@ -1,7 +1,7 @@
 ---
 #=================================================
 #
-# Group_Vars: OthZCntAgt.yml
+# Group_Vars: OTHCNT.yml
 #
 #=================================================
 ansible_ssh_user: root

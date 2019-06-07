@@ -61,6 +61,40 @@
     replace: '\1={{Timeout}}'
     backup:   no
 
+### Encription Parameter Section ###
+- name: Change TLS Connect Type
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSConnect=.*)'
+    replace: 'TLSConnect={{ TLSConnect }}'
+  when:
+    PxTLSConnect is defined
+
+- name: Change TLS Accept Type
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSAccept=.*)'
+    replace: 'TLSAccept={{ TLSAccept }}'
+  when:
+    PxTLSAccept is defined
+
+- name: Change TLS PSK Identity
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSPSKIdentity=.*)'
+    replace: 'TLSPSKIdentity={{ TLSPSKIdentity }}'
+  when:
+    PxTLSPSKIdentity is defined
+
+- name: Change TLS PSK File Path
+  replace:
+    dest:    "{{Px_CnfPath}}"
+    regexp:  '^(#|)(| )(TLSPSKFile=.*)'
+    replace: 'TLSPSKFile={{ TLSPSKFile }}'
+  when:
+    PxTLSPSKFile is defined
+
+
 #- name: Schema Archive File Decompress
 #  shell: gunzip -c "{{ zPxSqlFlPth }}{{ zPxSchmFl }}.gz" > {{ schmDCmpDst }}{{ zPxSchmFl }}
 #  when:
