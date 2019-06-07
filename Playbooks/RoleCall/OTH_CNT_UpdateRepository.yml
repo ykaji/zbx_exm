@@ -1,0 +1,8 @@
+---
+- name: Update Repository for CentOS Servers
+  hosts: OTHCNT
+  gather_facts: true
+
+  roles:
+    - repository
+

@@ -1,0 +1,10 @@
+---
+- name: Create Database on Zabbix Server
+  hosts: OTHSV
+  gather_facts: true
+
+  tasks:
+  - include_role:
+      name:       database
+
+

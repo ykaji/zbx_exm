@@ -1,0 +1,7 @@
+---
+
+- name: License Extention for Windows Server of OTH Env
+  hosts: OTHWIN
+  gather_facts: true
+
+  roles: ['windows_license_extention']

@@ -1,0 +1,8 @@
+---
+- name: Windows Update for Windows Servers
+  hosts: OTHWIN
+  gather_facts: false
+
+  roles:
+    - windows_update
+

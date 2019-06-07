@@ -1,0 +1,8 @@
+---
+- name: Create DB Schema for Proxy Server
+  hosts: OTHPX
+  gather_facts: true
+
+  roles:
+    - createDB
+

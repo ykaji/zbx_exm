@@ -1,0 +1,8 @@
+---
+- name: Update Repository for Ubuntu Debian
+  hosts: OTHUBDB
+  gather_facts: true
+
+  roles:
+    - repository
+
