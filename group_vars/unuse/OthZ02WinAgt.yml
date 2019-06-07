@@ -1,0 +1,21 @@
+---
+#=================================================
+#
+# Group_Vars: OthZWinAgt.yml
+#
+#=================================================
+
+## Login Info ##
+ansible_ssh_user: Administrator
+ansible_ssh_pass: ZAQwsx123
+ansible_port: 5986
+ansible_connection: winrm
+ansible_winrm_server_cert_validation: ignore
+
+
+# ServerIP:       10.2.22.11
+# ServerActiveIP: 10.2.22.11
+
+
+## Zabbix Agent ##
+Agt_Specify_Ver: 3.0.22
