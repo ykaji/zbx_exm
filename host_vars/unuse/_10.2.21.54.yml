@@ -1,0 +1,15 @@
+---
+#=================================================
+#
+# Host_Vars: 10.2.21.54.yml
+#
+#=================================================
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+#Agt_Specify_Ver: 3.0.17
+
+ServerIP:       10.2.21.31
+ServerActiveIP: 10.2.21.31
+
+Agt_CnfPath: /etc/zabbix/zabbix_agentd.conf

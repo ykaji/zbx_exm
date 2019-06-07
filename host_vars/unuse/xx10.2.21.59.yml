@@ -1,0 +1,2 @@
+ansible_ssh_user: jone
+ansible_ssh_pass: jone59
