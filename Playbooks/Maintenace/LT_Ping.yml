@@ -10,4 +10,4 @@
 
   - name: Pinging for Windows Servers
     win_ping:
-    when: ansible_system == 'Wini32NT'
+    when: ansible_system == 'Win32NT'
