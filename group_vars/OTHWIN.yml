@@ -14,3 +14,4 @@ ansible_winrm_server_cert_validation: ignore
 
 ## Zabbix Agent ##
 Agt_Specify_Ver: 3.0.28
+
