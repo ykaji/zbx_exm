@@ -8,8 +8,8 @@
 ansible_ssh_user: root
 ansible_ssh_pass: ZAQwsx123
 
-Px_Specify_Ver:  4.0.0
-Agt_Specify_Ver: 4.0.0
+Px_Specify_Ver:  3.0.28
+Agt_Specify_Ver: 3.0.28
 
 PxServerIP:       10.2.22.11
 ServerIP:         10.2.22.21
