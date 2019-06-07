@@ -1,0 +1,7 @@
+---
+- name: License Extention for Windows Server of LT Env
+  hosts: LTWIN
+  gather_facts: true
+
+  roles: windows_license_extention
+  when: ansible_system == 'Wini32NT'
