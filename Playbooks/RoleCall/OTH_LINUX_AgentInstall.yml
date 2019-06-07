@@ -1,6 +1,6 @@
 ---
 - name: Install Zabbix Agent for Linux OS on Other Exam
-  hosts: OTHLINUX
+  hosts: OTHCNT, OTHUBDB
   gather_facts: true
 
   roles:
