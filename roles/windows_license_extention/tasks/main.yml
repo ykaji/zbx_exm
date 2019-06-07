@@ -1,0 +1,9 @@
+---
+#=================================================
+#
+# Role-Task: windows_license_extention
+#
+#=================================================
+
+- name: Windows Server Evaluation version License Extention
+  win_shell: 'slmgr /rearm'
