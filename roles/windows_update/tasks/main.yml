@@ -13,7 +13,7 @@
       - FeaturePacks
       - SecurityUpdates
       - ServicePacks
-      - Update Rollups
+      - UpdateRollups
       - Updates
     state:
       installed

@@ -10,5 +10,5 @@
 
     - name: Reboot Windows OS
       win_reboot:
-        reboot_timeout_sec: 60
+        reboot_timeout_sec: 180
       when: ansible_system == "Win32NT"
