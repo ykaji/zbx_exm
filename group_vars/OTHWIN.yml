@@ -13,8 +13,4 @@ ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 
 ## Zabbix Agent ##
-<<<<<<< HEAD
-Agt_Specify_Ver: 3.0.28282828282828282828282828282828282828282828282828282828
-=======
 Agt_Specify_Ver: 3.0.28
->>>>>>> 57c1fd44ce3eeeca5aeb6aa56f5b48915593c6bf
