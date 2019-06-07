@@ -1,0 +1,30 @@
+e--
+#=================================================
+#
+# Group_Vars: LTPX.yml
+#
+#=================================================
+
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+Agt_Specify_Ver: 3.0.17
+Px_Specify_Ver:  3.0.17
+
+PxServerIP:       10.2.21.11
+ServerIP:         10.2.21.11
+ServerActiveIP:   10.2.21.11
+HostMetadataItem: system.sw.os
+
+### Proxy Config Setting Value ###
+DBRootUsr:   root
+DBRootPwd:   toor
+DBName:             zabbix_proxy
+DBUser:             zabbix
+DBPassword:         zabbix
+ProxyLocalBuffer:   24
+ProxyOfflineBuffer: 24
+ConfigFrequency:    600
+Timeout:            10
+
+isSv: False

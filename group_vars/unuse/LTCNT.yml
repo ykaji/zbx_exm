@@ -1,0 +1,19 @@
+---
+#=================================================
+#
+# Group_Vars: LTCNT.yml
+#
+#=================================================
+
+ansible_ssh_user: root
+ansible_ssh_pass: ZAQwsx123
+
+Agt_Specify_Ver: 3.0.17
+
+#ServerIP:             10.6.21.23
+#ServerActiveIP:       10.6.21.23
+HostMetadataItem:     system.sw.os
+AllowRoot:            1
+EnableRemoteCommands: 1
+
+isSv: False
