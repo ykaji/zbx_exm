@@ -7,8 +7,8 @@
 ansible_ssh_user: root
 ansible_ssh_pass: ZAQwsx123
 
-Agt_Specify_Ver: 4.0.0
-Sv_Specify_Ver: 4.0.0
+Agt_Specify_Ver: 3.0.28
+Sv_Specify_Ver: 3.0.28
 
 # Server Config Setting Value
 DBRootUsr:             root
